@@ -44,4 +44,3 @@ def bd_simulator(t, x0):
         result[i] = bd_one_path(t, x0[i])
 
     return result
-
