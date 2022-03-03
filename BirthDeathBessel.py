@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class BirthDeathBessel:
 
 	def __init__(self, t = 0, x0 = [0]):
@@ -19,7 +20,6 @@ class BirthDeathBessel:
 			return [[expo/(2*s + 1), s + (-1)**(int(unif < s/(2*s + 1)))] for s in last_states]
 		else:
 			return [[np.random.exponential()/(2*s + 1), s + (-1)**(int(np.random.rand() < s/(2*s + 1)))] for s in last_states]
-
 
 	def simulate(self, dt = 0, sync = False):
 		self.t = self.t + dt
@@ -47,3 +47,6 @@ class BirthDeathBessel:
 					index = j
 			indices.append(index)
 		return [ self.states[n][indices[n]] for n in range(size)]
+
+
+
