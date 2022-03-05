@@ -969,7 +969,7 @@ struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
 struct __pyx_opt_args_13bd_sim_cython_bd_sim;
 
-/* "bd_sim_cython.pyx":43
+/* "bd_sim_cython.pyx":41
  * 
  * 
  * cpdef void bd_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
@@ -1694,6 +1694,9 @@ static int __Pyx_ValidateAndInit_memviewslice(
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_long(PyObject *, int writable_flag);
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
 /* MemviewSliceCopyTemplate.proto */
 static __Pyx_memviewslice
 __pyx_memoryview_copy_new_contig(const __Pyx_memviewslice *from_mvs,
@@ -1709,9 +1712,6 @@ static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *);
@@ -1759,7 +1759,7 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static void __pyx_f_13bd_sim_cython_bd_one_path(double, long, long, int __pyx_skip_dispatch); /*proto*/
+static long __pyx_f_13bd_sim_cython_bd_one_path(double, long, int __pyx_skip_dispatch); /*proto*/
 static void __pyx_f_13bd_sim_cython_bd_sim(double, __Pyx_memviewslice, long, __Pyx_memviewslice, int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_bd_sim *__pyx_optional_args); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
@@ -1817,7 +1817,6 @@ static const char __pyx_k_pd[] = "pd";
 static const char __pyx_k_x0[] = "x0";
 static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_obj[] = "obj";
-static const char __pyx_k_out[] = "out";
 static const char __pyx_k_base[] = "base";
 static const char __pyx_k_dict[] = "__dict__";
 static const char __pyx_k_main[] = "__main__";
@@ -1961,7 +1960,6 @@ static PyObject *__pyx_n_s_num_path;
 static PyObject *__pyx_n_s_num_threads;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_n_s_obj;
-static PyObject *__pyx_n_s_out;
 static PyObject *__pyx_n_s_output;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_pandas;
@@ -1998,7 +1996,7 @@ static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_x0;
-static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0, long __pyx_v_out); /* proto */
+static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0); /* proto */
 static PyObject *__pyx_pf_13bd_sim_cython_2bd_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
@@ -2080,13 +2078,13 @@ static PyObject *__pyx_codeobj__25;
 /* "bd_sim_cython.pyx":11
  * 
  * 
- * cpdef void bd_one_path(double t, long x0, long out) nogil:             # <<<<<<<<<<<<<<
+ * cpdef long bd_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
  *     """
  *     simulate a birth-death proecss X at time t.
  */
 
 static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x0, CYTHON_UNUSED long __pyx_v_out, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static long __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x0, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_v_s;
   double __pyx_v_time_to_arrival;
   double __pyx_v_birth_rate;
@@ -2094,11 +2092,12 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
   double __pyx_v_arrival_rate;
   double __pyx_v_U;
   long __pyx_v_state;
+  long __pyx_r;
   int __pyx_t_1;
   double __pyx_t_2;
   int __pyx_t_3;
 
-  /* "bd_sim_cython.pyx":21
+  /* "bd_sim_cython.pyx":20
  *     """
  *     cdef:
  *         double s = 0, time_to_arrival, birth_rate, death_rate, arrival_rate, U             # <<<<<<<<<<<<<<
@@ -2107,7 +2106,7 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  */
   __pyx_v_s = 0.0;
 
-  /* "bd_sim_cython.pyx":22
+  /* "bd_sim_cython.pyx":21
  *     cdef:
  *         double s = 0, time_to_arrival, birth_rate, death_rate, arrival_rate, U
  *         long state = x0             # <<<<<<<<<<<<<<
@@ -2116,7 +2115,7 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  */
   __pyx_v_state = __pyx_v_x0;
 
-  /* "bd_sim_cython.pyx":24
+  /* "bd_sim_cython.pyx":23
  *         long state = x0
  * 
  *     while True:             # <<<<<<<<<<<<<<
@@ -2125,7 +2124,7 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  */
   while (1) {
 
-    /* "bd_sim_cython.pyx":25
+    /* "bd_sim_cython.pyx":24
  * 
  *     while True:
  *         birth_rate = state + 1.0             # <<<<<<<<<<<<<<
@@ -2134,7 +2133,7 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  */
     __pyx_v_birth_rate = (__pyx_v_state + 1.0);
 
-    /* "bd_sim_cython.pyx":26
+    /* "bd_sim_cython.pyx":25
  *     while True:
  *         birth_rate = state + 1.0
  *         death_rate = state + 0.0             # <<<<<<<<<<<<<<
@@ -2143,7 +2142,7 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  */
     __pyx_v_death_rate = (__pyx_v_state + 0.0);
 
-    /* "bd_sim_cython.pyx":27
+    /* "bd_sim_cython.pyx":26
  *         birth_rate = state + 1.0
  *         death_rate = state + 0.0
  *         arrival_rate = birth_rate + death_rate             # <<<<<<<<<<<<<<
@@ -2152,7 +2151,7 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  */
     __pyx_v_arrival_rate = (__pyx_v_birth_rate + __pyx_v_death_rate);
 
-    /* "bd_sim_cython.pyx":28
+    /* "bd_sim_cython.pyx":27
  *         death_rate = state + 0.0
  *         arrival_rate = birth_rate + death_rate
  *         U = rand() / (RAND_MAX + 1.0)             # <<<<<<<<<<<<<<
@@ -2169,11 +2168,11 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 28, __pyx_L1_error)
+      __PYX_ERR(0, 27, __pyx_L1_error)
     }
     __pyx_v_U = (__pyx_t_1 / __pyx_t_2);
 
-    /* "bd_sim_cython.pyx":29
+    /* "bd_sim_cython.pyx":28
  *         arrival_rate = birth_rate + death_rate
  *         U = rand() / (RAND_MAX + 1.0)
  *         time_to_arrival = -log(1-U) / arrival_rate             # <<<<<<<<<<<<<<
@@ -2189,11 +2188,11 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 29, __pyx_L1_error)
+      __PYX_ERR(0, 28, __pyx_L1_error)
     }
     __pyx_v_time_to_arrival = (__pyx_t_2 / __pyx_v_arrival_rate);
 
-    /* "bd_sim_cython.pyx":30
+    /* "bd_sim_cython.pyx":29
  *         U = rand() / (RAND_MAX + 1.0)
  *         time_to_arrival = -log(1-U) / arrival_rate
  *         s += time_to_arrival             # <<<<<<<<<<<<<<
@@ -2202,45 +2201,37 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  */
     __pyx_v_s = (__pyx_v_s + __pyx_v_time_to_arrival);
 
-    /* "bd_sim_cython.pyx":32
+    /* "bd_sim_cython.pyx":31
  *         s += time_to_arrival
  *         # stop and return when exceeds target time
  *         if s > t:             # <<<<<<<<<<<<<<
- *             out = state
- *             return
+ *             return state
+ *         # update
  */
     __pyx_t_3 = ((__pyx_v_s > __pyx_v_t) != 0);
     if (__pyx_t_3) {
 
-      /* "bd_sim_cython.pyx":33
+      /* "bd_sim_cython.pyx":32
  *         # stop and return when exceeds target time
  *         if s > t:
- *             out = state             # <<<<<<<<<<<<<<
- *             return
- *         # update
- */
-      __pyx_v_out = __pyx_v_state;
-
-      /* "bd_sim_cython.pyx":34
- *         if s > t:
- *             out = state
- *             return             # <<<<<<<<<<<<<<
+ *             return state             # <<<<<<<<<<<<<<
  *         # update
  *         U = rand() / (RAND_MAX + 1.0)
  */
+      __pyx_r = __pyx_v_state;
       goto __pyx_L0;
 
-      /* "bd_sim_cython.pyx":32
+      /* "bd_sim_cython.pyx":31
  *         s += time_to_arrival
  *         # stop and return when exceeds target time
  *         if s > t:             # <<<<<<<<<<<<<<
- *             out = state
- *             return
+ *             return state
+ *         # update
  */
     }
 
-    /* "bd_sim_cython.pyx":36
- *             return
+    /* "bd_sim_cython.pyx":34
+ *             return state
  *         # update
  *         U = rand() / (RAND_MAX + 1.0)             # <<<<<<<<<<<<<<
  *         if U < (death_rate / arrival_rate):
@@ -2256,11 +2247,11 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 36, __pyx_L1_error)
+      __PYX_ERR(0, 34, __pyx_L1_error)
     }
     __pyx_v_U = (__pyx_t_1 / __pyx_t_2);
 
-    /* "bd_sim_cython.pyx":37
+    /* "bd_sim_cython.pyx":35
  *         # update
  *         U = rand() / (RAND_MAX + 1.0)
  *         if U < (death_rate / arrival_rate):             # <<<<<<<<<<<<<<
@@ -2275,12 +2266,12 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 37, __pyx_L1_error)
+      __PYX_ERR(0, 35, __pyx_L1_error)
     }
     __pyx_t_3 = ((__pyx_v_U < (__pyx_v_death_rate / __pyx_v_arrival_rate)) != 0);
     if (__pyx_t_3) {
 
-      /* "bd_sim_cython.pyx":38
+      /* "bd_sim_cython.pyx":36
  *         U = rand() / (RAND_MAX + 1.0)
  *         if U < (death_rate / arrival_rate):
  *             state -= 1             # <<<<<<<<<<<<<<
@@ -2289,7 +2280,7 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  */
       __pyx_v_state = (__pyx_v_state - 1);
 
-      /* "bd_sim_cython.pyx":37
+      /* "bd_sim_cython.pyx":35
  *         # update
  *         U = rand() / (RAND_MAX + 1.0)
  *         if U < (death_rate / arrival_rate):             # <<<<<<<<<<<<<<
@@ -2299,7 +2290,7 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
       goto __pyx_L6;
     }
 
-    /* "bd_sim_cython.pyx":40
+    /* "bd_sim_cython.pyx":38
  *             state -= 1
  *         else:
  *             state += 1             # <<<<<<<<<<<<<<
@@ -2315,37 +2306,37 @@ static void __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
   /* "bd_sim_cython.pyx":11
  * 
  * 
- * cpdef void bd_one_path(double t, long x0, long out) nogil:             # <<<<<<<<<<<<<<
+ * cpdef long bd_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
  *     """
  *     simulate a birth-death proecss X at time t.
  */
 
   /* function exit code */
+  __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_WriteUnraisable("bd_sim_cython.bd_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __pyx_r = 0;
   __pyx_L0:;
+  return __pyx_r;
 }
 
 /* Python wrapper */
 static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_13bd_sim_cython_bd_one_path[] = "\n    simulate a birth-death proecss X at time t.\n    \n    :param t: float, terminal time\n    :param x0: initial value of X\n    :param out: output value of X\n    :return: in-place\n    ";
+static char __pyx_doc_13bd_sim_cython_bd_one_path[] = "\n    simulate a birth-death proecss X at time t.\n    \n    :param t: float, terminal time\n    :param x0: initial value of X\n    :return: in-place\n    ";
 static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_t;
   long __pyx_v_x0;
-  long __pyx_v_out;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("bd_one_path (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t,&__pyx_n_s_x0,&__pyx_n_s_out,0};
-    PyObject* values[3] = {0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t,&__pyx_n_s_x0,0};
+    PyObject* values[2] = {0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-        CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         CYTHON_FALLTHROUGH;
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -2362,51 +2353,43 @@ static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x0)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bd_one_path", 1, 3, 3, 1); __PYX_ERR(0, 11, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  2:
-        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_out)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("bd_one_path", 1, 3, 3, 2); __PYX_ERR(0, 11, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bd_one_path", 1, 2, 2, 1); __PYX_ERR(0, 11, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bd_one_path") < 0)) __PYX_ERR(0, 11, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_t = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_t == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
     __pyx_v_x0 = __Pyx_PyInt_As_long(values[1]); if (unlikely((__pyx_v_x0 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
-    __pyx_v_out = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_out == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bd_one_path", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("bd_one_path", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("bd_sim_cython.bd_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_13bd_sim_cython_bd_one_path(__pyx_self, __pyx_v_t, __pyx_v_x0, __pyx_v_out);
+  __pyx_r = __pyx_pf_13bd_sim_cython_bd_one_path(__pyx_self, __pyx_v_t, __pyx_v_x0);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0, long __pyx_v_out) {
+static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("bd_one_path", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_13bd_sim_cython_bd_one_path(__pyx_v_t, __pyx_v_x0, __pyx_v_out, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_13bd_sim_cython_bd_one_path(__pyx_v_t, __pyx_v_x0, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2423,7 +2406,7 @@ static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__
   return __pyx_r;
 }
 
-/* "bd_sim_cython.pyx":43
+/* "bd_sim_cython.pyx":41
  * 
  * 
  * cpdef void bd_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
@@ -2449,12 +2432,12 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
     }
   }
 
-  /* "bd_sim_cython.pyx":47
+  /* "bd_sim_cython.pyx":45
  *         Py_ssize_t iPath
  * 
  *     with nogil, parallel(num_threads=num_threads):             # <<<<<<<<<<<<<<
  *         for iPath in prange(num_path, schedule='dynamic'):
- *             bd_one_path(t, x0[iPath], output[iPath])
+ *             output[iPath] = bd_one_path(t, x0[iPath])
  */
   {
       #ifdef WITH_THREAD
@@ -2485,11 +2468,11 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
                 Py_BEGIN_ALLOW_THREADS
                 #endif /* _OPENMP */
 
-                /* "bd_sim_cython.pyx":48
+                /* "bd_sim_cython.pyx":46
  * 
  *     with nogil, parallel(num_threads=num_threads):
  *         for iPath in prange(num_path, schedule='dynamic'):             # <<<<<<<<<<<<<<
- *             bd_one_path(t, x0[iPath], output[iPath])
+ *             output[iPath] = bd_one_path(t, x0[iPath])
  * 
  */
                 __pyx_t_1 = __pyx_v_num_path;
@@ -2511,10 +2494,10 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
                             {
                                 __pyx_v_iPath = (Py_ssize_t)(0 + 1 * __pyx_t_2);
 
-                                /* "bd_sim_cython.pyx":49
+                                /* "bd_sim_cython.pyx":47
  *     with nogil, parallel(num_threads=num_threads):
  *         for iPath in prange(num_path, schedule='dynamic'):
- *             bd_one_path(t, x0[iPath], output[iPath])             # <<<<<<<<<<<<<<
+ *             output[iPath] = bd_one_path(t, x0[iPath])             # <<<<<<<<<<<<<<
  * 
  *     return
  */
@@ -2526,7 +2509,7 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
                                 } else if (unlikely(__pyx_t_4 >= __pyx_v_x0.shape[0])) __pyx_t_5 = 0;
                                 if (unlikely(__pyx_t_5 != -1)) {
                                   __Pyx_RaiseBufferIndexErrorNogil(__pyx_t_5);
-                                  __PYX_ERR(0, 49, __pyx_L12_error)
+                                  __PYX_ERR(0, 47, __pyx_L12_error)
                                 }
                                 __pyx_t_6 = __pyx_v_iPath;
                                 __pyx_t_5 = -1;
@@ -2536,9 +2519,9 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
                                 } else if (unlikely(__pyx_t_6 >= __pyx_v_output.shape[0])) __pyx_t_5 = 0;
                                 if (unlikely(__pyx_t_5 != -1)) {
                                   __Pyx_RaiseBufferIndexErrorNogil(__pyx_t_5);
-                                  __PYX_ERR(0, 49, __pyx_L12_error)
+                                  __PYX_ERR(0, 47, __pyx_L12_error)
                                 }
-                                __pyx_f_13bd_sim_cython_bd_one_path(__pyx_v_t, (*((long *) ( /* dim=0 */ (__pyx_v_x0.data + __pyx_t_4 * __pyx_v_x0.strides[0]) ))), (*((long *) ( /* dim=0 */ (__pyx_v_output.data + __pyx_t_6 * __pyx_v_output.strides[0]) ))), 0);
+                                *((long *) ( /* dim=0 */ (__pyx_v_output.data + __pyx_t_6 * __pyx_v_output.strides[0]) )) = __pyx_f_13bd_sim_cython_bd_one_path(__pyx_v_t, (*((long *) ( /* dim=0 */ (__pyx_v_x0.data + __pyx_t_4 * __pyx_v_x0.strides[0]) ))), 0);
                                 goto __pyx_L15;
                                 __pyx_L12_error:;
                                 {
@@ -2663,12 +2646,12 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
         #endif
       }
 
-      /* "bd_sim_cython.pyx":47
+      /* "bd_sim_cython.pyx":45
  *         Py_ssize_t iPath
  * 
  *     with nogil, parallel(num_threads=num_threads):             # <<<<<<<<<<<<<<
  *         for iPath in prange(num_path, schedule='dynamic'):
- *             bd_one_path(t, x0[iPath], output[iPath])
+ *             output[iPath] = bd_one_path(t, x0[iPath])
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -2689,14 +2672,14 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
       }
   }
 
-  /* "bd_sim_cython.pyx":51
- *             bd_one_path(t, x0[iPath], output[iPath])
+  /* "bd_sim_cython.pyx":49
+ *             output[iPath] = bd_one_path(t, x0[iPath])
  * 
  *     return             # <<<<<<<<<<<<<<
  */
   goto __pyx_L0;
 
-  /* "bd_sim_cython.pyx":43
+  /* "bd_sim_cython.pyx":41
  * 
  * 
  * cpdef void bd_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
@@ -2751,19 +2734,19 @@ static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x0)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 1); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 1); __PYX_ERR(0, 41, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_path)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 2); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 2); __PYX_ERR(0, 41, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 3); __PYX_ERR(0, 43, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 3); __PYX_ERR(0, 41, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -2773,7 +2756,7 @@ static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bd_sim") < 0)) __PYX_ERR(0, 43, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bd_sim") < 0)) __PYX_ERR(0, 41, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2787,19 +2770,19 @@ static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_t = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_t == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L3_error)
-    __pyx_v_x0 = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_x0.memview)) __PYX_ERR(0, 43, __pyx_L3_error)
-    __pyx_v_num_path = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_num_path == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L3_error)
-    __pyx_v_output = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_output.memview)) __PYX_ERR(0, 43, __pyx_L3_error)
+    __pyx_v_t = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_t == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L3_error)
+    __pyx_v_x0 = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_x0.memview)) __PYX_ERR(0, 41, __pyx_L3_error)
+    __pyx_v_num_path = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_num_path == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L3_error)
+    __pyx_v_output = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_output.memview)) __PYX_ERR(0, 41, __pyx_L3_error)
     if (values[4]) {
-      __pyx_v_num_threads = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_num_threads == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L3_error)
+      __pyx_v_num_threads = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_num_threads == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L3_error)
     } else {
       __pyx_v_num_threads = ((int)4);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 43, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 41, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("bd_sim_cython.bd_sim", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2819,12 +2802,12 @@ static PyObject *__pyx_pf_13bd_sim_cython_2bd_sim(CYTHON_UNUSED PyObject *__pyx_
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("bd_sim", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_x0.memview)) { __Pyx_RaiseUnboundLocalError("x0"); __PYX_ERR(0, 43, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_output.memview)) { __Pyx_RaiseUnboundLocalError("output"); __PYX_ERR(0, 43, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_x0.memview)) { __Pyx_RaiseUnboundLocalError("x0"); __PYX_ERR(0, 41, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_output.memview)) { __Pyx_RaiseUnboundLocalError("output"); __PYX_ERR(0, 41, __pyx_L1_error) }
   __pyx_t_1.__pyx_n = 1;
   __pyx_t_1.num_threads = __pyx_v_num_threads;
   __pyx_f_13bd_sim_cython_bd_sim(__pyx_v_t, __pyx_v_x0, __pyx_v_num_path, __pyx_v_output, 0, &__pyx_t_1); 
-  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -16488,7 +16471,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_num_threads, __pyx_k_num_threads, sizeof(__pyx_k_num_threads), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
-  {&__pyx_n_s_out, __pyx_k_out, sizeof(__pyx_k_out), 0, 0, 1, 1},
   {&__pyx_n_s_output, __pyx_k_output, sizeof(__pyx_k_output), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_pandas, __pyx_k_pandas, sizeof(__pyx_k_pandas), 0, 0, 1, 1},
@@ -20397,6 +20379,37 @@ __pyx_fail:
     return result;
 }
 
+/* CIntToPy */
+  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
+
 /* MemviewSliceCopyTemplate */
   static __Pyx_memviewslice
 __pyx_memoryview_copy_new_contig(const __Pyx_memviewslice *from_mvs,
@@ -20869,37 +20882,6 @@ raise_neg_overflow:
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
         return _PyLong_FromByteArray(bytes, sizeof(int),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
                                      little, !is_unsigned);
     }
 }

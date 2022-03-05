@@ -46,14 +46,21 @@ from bd_sim_cython import bd_sim
 #     return result
 
 
-def bd_simulator(t, x0, k, num_threads=4):
+def bd_simulator(t, x0, num_paths, num_threads=4):
+    """
+    :param t: terminal time, double
+    :param x0: initial state, callable or int
+    :param num_paths: number of paths
+    :param num_threads: number of threads for multiprocessing
+    :return: ndarray of simulated result at terminal time
+    """
     if isinstance(x0, int):
-        x0_array = np.array([x0]*k, dtype=np.int64)
+        x0_array = np.array([x0]*num_paths, dtype=np.int64)
     else:
-        x0_array = np.array([x0() for _ in range(k)], dtype=np.int64)
+        x0_array = np.array([x0() for _ in range(num_paths)], dtype=np.int64)
 
-    output = np.zeros(dtype=np.int64, shape=k)
+    output = np.zeros(dtype=np.int64, shape=num_paths)
 
-    bd_sim(t, x0_array, k, output, int(num_threads))
+    bd_sim(t, x0_array, num_paths, output, int(num_threads))
 
     return output
