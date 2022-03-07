@@ -10,7 +10,7 @@ from cython.parallel import prange, parallel
 
 cpdef long bd_one_path(double t, long x0) nogil:
     """
-    simulate a birth-death proecss X at time t.
+    simulate a birth-death process X at time t.
     
     :param t: float, terminal time
     :param x0: initial value of X
