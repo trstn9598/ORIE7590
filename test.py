@@ -9,7 +9,7 @@ def estimate_SqBesselBD(N = 10**6, t = 0, x0 = [0], test = 'Bessel', args = []):
 
 	:param N: int, Number of simulations
 	:param T: positive float, Simulation horizon
-	:param x0: list of positive float, initial values of X
+	:param x0: initial values of X, positive double
 	"""
 	if test == 'Bessel':
 		f = lambda n : laguerre(n)(1)
@@ -28,7 +28,9 @@ def estimate_SqBesselBD(N = 10**6, t = 0, x0 = [0], test = 'Bessel', args = []):
 	if x0.ndim == 0:
 		x0 = np.array([x0])
 	y0_poisson = np.array([np.random.poisson(x, N) for x in x0]).flatten()  # Map x0 by Poisson kernel
-	# last_states = BD_simulator.bd_simulator(t, y0_poisson, len(y0_poisson)).reshape(len(x0), N)
+	# def poisson_x0():
+	# 	return np.random.poisson(x0)
+	# last_states = BD_simulator.bd_simulator(T, x0=poisson_x0, num_paths=N, num_threads=1).reshape(len(x0), N)
 	last_states = np.array([np.random.binomial(n, 0.5) for n in y0_poisson]).reshape(len(x0), N) #placeholder for simulation
 	estimate = exp(t)*np.mean(np.vectorize(f)(last_states), axis = 1)
 	return estimate
@@ -54,6 +56,7 @@ def estimate_SqBessel(t = 0, x0 = [0], test = 'Bessel', args = []):
 
 def discrete_poly(n, coef):
 	return sum([coef[i]*poch(n - i + 1, i) for i in range(len(coef)) if n >= i])
+
 
 x0 = range(10)
 coef = [1]

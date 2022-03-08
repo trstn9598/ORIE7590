@@ -8,13 +8,12 @@ from libcpp.vector cimport vector
 from cython.parallel import prange, parallel
 
 
-cpdef void bd_one_path(double t, long x0, long out) nogil:
+cpdef long bd_one_path(double t, long x0) nogil:
     """
     simulate a birth-death proecss X at time t.
     
     :param t: float, terminal time
     :param x0: initial value of X
-    :param out: output value of X
     :return: in-place
     """
     cdef:
@@ -30,8 +29,7 @@ cpdef void bd_one_path(double t, long x0, long out) nogil:
         s += time_to_arrival
         # stop and return when exceeds target time
         if s > t:
-            out = state
-            return
+            return state
         # update
         U = rand() / (RAND_MAX + 1.0)
         if U < (death_rate / arrival_rate):
@@ -46,6 +44,6 @@ cpdef void bd_sim(double t, long[:] x0, long num_path, long[:] output, int num_t
 
     with nogil, parallel(num_threads=num_threads):
         for iPath in prange(num_path, schedule='dynamic'):
-            bd_one_path(t, x0[iPath], output[iPath])
+            output[iPath] = bd_one_path(t, x0[iPath])
 
     return
