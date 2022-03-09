@@ -85,6 +85,7 @@
 \DeclareMathOperator{\besq}{BESQ}
 \DeclareMathOperator{\dbesq}{dBESQ}
 \DeclareMathOperator{\pois}{Pois}
+\DeclareMathOperator{\Exp}{Exp}
 \DeclareMathOperator{\ent}{Ent}
 \DeclareMathOperator{\Ran}{Ran}
 %\let\span\relax % "Undefine" \span
@@ -140,7 +141,7 @@
 		We will denote $Q^{(0)} = Q$ and $B^{(0)} = B$. The $\besq_m$ processes are $1$-self-similar:
 		\beq \label{eqn:self_similar_besq} ( \alpha X_t^{(B, m)} \mid X_0^{(B, m)} = x) \overset{(d)}{=} (X_{\alpha t}^{(B, m)} \mid X_0^{(B, m)} = \alpha x), \quad \forall x \in \R_+, \alpha > 0 . \eeq
 		
-		The measure $\mu_m(dx) = \frac{x^m}{\Gamma(m + 1)} \, dx$ is invariant for $Q^{(m)}$ and $Q^{(m)}$ is self-adjoint in $L^2(\frk{m}_m)$. 	
+		The measure $\mu_m(dx) = \frac{x^m}{\Gamma(m + 1)} \, dx$ is invariant for $Q^{(m)}$ and $Q^{(m)}$ is self-adjoint in $L^2(\frk{m}_m)$.
 		
 		\item The \textit{Laguerre} process $X^{L, m}$ of index $m \geq $ is a diffusion process on $\R_+$ that is a solution to the SDE 
 		\beq dX_t = (1 + m - X_t) dt + \sqrt{2X_t} \, dW_t \eeq
@@ -186,7 +187,16 @@
 	\beq L_t\Lambda = \Lambda \bb{K}_t \quad \text{on } \ell^2(\frk{n}). \eeq
 	That is, if $f \in \ell^2(\frk{n})$ and $F = \Lambda f$, then for a.e. $x \in \R_+$
 	\beq \E_x[F(X_t^{L})] = \E[f(\bb{X}_t^{(L)}) \mid X_0 \sim \pois(x)] . \eeq
-
+	
+\subsection{Spectral Simulation of BESQ${}^{(0)}$}
+	${}$ {\color{red} formulas to be verified-} Self-adjointness guarantees a spectral representation of $Q$, which can be expressed 
+		\beq Q_t f(x) = \frk{H}_0 \cl{M}_{e^{-t\cdot}} \frk{H}_0 f(x), \eeq
+		where $\cl{M}_{e^{-t\cdot}}f(x) = e^{-tx} f(x)$ for $f \in L^2(\R_+)$ and $\frk{H}_0$ is the Hankel transform, which is an isometry of $L^2(\R_+)$ and an involution, i.e. $\frk{H}_0^{-1} = \frk{H}_0$. For $f \in L^2(\R_+)$, 
+		\beq \frk{H}_0 f(x) = \int_0^\infty f(q) \cl{J}_0(qx) q \, dq , \eeq
+		where $\cl{J}_0$ is the Bessel function of order $0$. It follows that 
+		\beq Q_tf(x) = \int_0^\infty e^{-qt} \cl{J}_0(qx) \frk{H}_0f(q) \, dq = \frac{1}{t} \E[\cl{J}_0(xZ) \frk{H}_0f(Z)] \eeq
+		where $Z \sim \Exp(t)$. 
+	
 
 
 	
@@ -195,11 +205,15 @@
 	\begin{enumerate}
 		\item We observe that it takes $O(e^t)$ jumps in the $\besq$ process to reach time $t$. Heuristically, this comes from considering the extreme scenario when $X_t^{(B)}$ trends upwards so $X_t^{(B)}(\tau_n) \sim n$ where $\tau_n$ is the $n$th jump time. Then, since the inter-jump times are on average $(X_t^{(B)}(\tau_n))^{-1} \sim n^{-1}$, we have $\tau_N \sim \sum_{n = 1}^N n^{-1} \approx \log N$. Hence, we need $N \sim e^t$ for $\tau_N \sim t$. 
 		
-		This exponential time complexity can be overcome with the self-similarity of $X^{(B)}$, see \eqref{eqn:self_similar_besq}, which can be written $d_{\alpha} Q_{\alpha t} = Q_{t} d_\alpha$, where $d_\alpha f(x) = f(\alpha x)$ is the dilation operator. This comes with the tradeoff that the simulation estimate variance is increased, but the variance increase should be polynomial in the dilation factor. 
+		This exponential time complexity can be overcome with the self-similarity of $X^{(B)}$, see \eqref{eqn:self_similar_besq}, which can be written $d_{\alpha} Q_{\alpha t} = Q_{t} d_\alpha$, where $d_\alpha f(x) = f(\alpha x)$ is the dilation operator. This comes with the tradeoff that the simulation estimate variance is increased, but the variance increase should be polynomial in the dilation factor. It follows that simulation will be of complexity will be constant in time. 
 		
-		Alternatively, we propose to overcome the exponentially time complexity described above with simulating the $\besq$ process via the Laguerre process, using the relation \eqref{eqn:besq_lag}, in which case we can similar exponentially large times for the $\besq$ process in linear time. 
+		\item Alternatively, we propose to overcome the exponentially time complexity described above with simulating the $\besq$ process via the Laguerre process, using the relation \eqref{eqn:besq_lag}, in which case we can similar exponentially large times for the $\besq$ process in linear time. In particular, for $t > 1$, $f \in \ell^2(\Z_+)$, $F = \Lambda f$,
+			\beq \E_x[F(X_t^{(B)})] = \E[f(\bb{X}^{L}_{\log (t + 1)}) \mid X_0 \sim \pois(tx)] . \eeq
+			
+			Since, the states for the discrete Laguerre on the RHS will be of size $O(tx)$ on average, noting that mean reversion will drive the process towards $1$, the time complexity of simulation will be $O(tx \log t)$ with high probability. 
 		
-		\item .
+			
+		
 
 	\end{enumerate}
 	
