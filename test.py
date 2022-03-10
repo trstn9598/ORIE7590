@@ -1,12 +1,5 @@
-from BD_simulator import MC_BESQ_gateway, MC_BESQviaLaguerre_gateway, MC_BESQ_hankel
+from BD_simulator import MC_BESQ_gateway, MC_BESQviaLaguerre_gateway, MC_BESQ_hankel, exact_BESQ
 import numpy as np
-from scipy.special import jv, laguerre, poch
-from scipy.integrate import quad
-from math import comb, factorial, exp, sqrt, log
-import hankel
-
-def exact_BESQ(t = 0, x0 = 0):
-    return exp(-t)*jv(0, 2*np.sqrt(x0))
 
 
 testno = 0

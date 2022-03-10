@@ -113,6 +113,9 @@ def MC_BESQ_hankel(N = 10**6, t = 0, x0 = 0, test = 'custom', function = lambda 
 def discrete_poly(n, coef):
     return sum([coef[i]*poch(n - i + 1, i) for i in range(len(coef)) if n >= i])
 
+def exact_BESQ(t = 0, x0 = 0, num_decimal = 4):
+    return (exp(-t)*jv(0, 2*np.sqrt(x0))).round(num_decimal)
+
 def hankel_reparam(z, f):
     """
     Monte Carlo estimator of expected BESQ using Hankel transform and Exponential r.v.
