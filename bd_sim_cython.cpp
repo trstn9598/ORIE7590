@@ -967,16 +967,29 @@ struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
-struct __pyx_opt_args_13bd_sim_cython_bd_sim;
+struct __pyx_opt_args_13bd_sim_cython_discrete_bessel_sim;
+struct __pyx_opt_args_13bd_sim_cython_discrete_laguerre_sim;
 
-/* "bd_sim_cython.pyx":41
+/* "bd_sim_cython.pyx":70
  * 
  * 
- * cpdef void bd_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
+ * cpdef void discrete_bessel_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
  *     cdef:
  *         Py_ssize_t iPath
  */
-struct __pyx_opt_args_13bd_sim_cython_bd_sim {
+struct __pyx_opt_args_13bd_sim_cython_discrete_bessel_sim {
+  int __pyx_n;
+  int num_threads;
+};
+
+/* "bd_sim_cython.pyx":81
+ * 
+ * 
+ * cpdef void discrete_laguerre_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         Py_ssize_t iPath
+ */
+struct __pyx_opt_args_13bd_sim_cython_discrete_laguerre_sim {
   int __pyx_n;
   int num_threads;
 };
@@ -1759,8 +1772,10 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static long __pyx_f_13bd_sim_cython_bd_one_path(double, long, int __pyx_skip_dispatch); /*proto*/
-static void __pyx_f_13bd_sim_cython_bd_sim(double, __Pyx_memviewslice, long, __Pyx_memviewslice, int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_bd_sim *__pyx_optional_args); /*proto*/
+static long __pyx_f_13bd_sim_cython_discrete_bessel_one_path(double, long, int __pyx_skip_dispatch); /*proto*/
+static long __pyx_f_13bd_sim_cython_discrete_laguerre_one_path(double, long, int __pyx_skip_dispatch); /*proto*/
+static void __pyx_f_13bd_sim_cython_discrete_bessel_sim(double, __Pyx_memviewslice, long, __Pyx_memviewslice, int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_discrete_bessel_sim *__pyx_optional_args); /*proto*/
+static void __pyx_f_13bd_sim_cython_discrete_laguerre_sim(double, __Pyx_memviewslice, long, __Pyx_memviewslice, int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_discrete_laguerre_sim *__pyx_optional_args); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -1996,8 +2011,10 @@ static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_x0;
-static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0); /* proto */
-static PyObject *__pyx_pf_13bd_sim_cython_2bd_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads); /* proto */
+static PyObject *__pyx_pf_13bd_sim_cython_discrete_bessel_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0); /* proto */
+static PyObject *__pyx_pf_13bd_sim_cython_2discrete_laguerre_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0); /* proto */
+static PyObject *__pyx_pf_13bd_sim_cython_4discrete_bessel_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads); /* proto */
+static PyObject *__pyx_pf_13bd_sim_cython_6discrete_laguerre_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2078,13 +2095,13 @@ static PyObject *__pyx_codeobj__25;
 /* "bd_sim_cython.pyx":11
  * 
  * 
- * cpdef long bd_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
+ * cpdef long discrete_bessel_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
  *     """
  *     simulate a birth-death proecss X at time t.
  */
 
-static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static long __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x0, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_13bd_sim_cython_1discrete_bessel_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static long __pyx_f_13bd_sim_cython_discrete_bessel_one_path(double __pyx_v_t, long __pyx_v_x0, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_v_s;
   double __pyx_v_time_to_arrival;
   double __pyx_v_birth_rate;
@@ -2295,7 +2312,7 @@ static long __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  *         else:
  *             state += 1             # <<<<<<<<<<<<<<
  * 
- * 
+ * cpdef long discrete_laguerre_one_path(double t, long x0) nogil:
  */
     /*else*/ {
       __pyx_v_state = (__pyx_v_state + 1);
@@ -2306,7 +2323,7 @@ static long __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
   /* "bd_sim_cython.pyx":11
  * 
  * 
- * cpdef long bd_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
+ * cpdef long discrete_bessel_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
  *     """
  *     simulate a birth-death proecss X at time t.
  */
@@ -2315,21 +2332,21 @@ static long __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("bd_sim_cython.bd_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __Pyx_WriteUnraisable("bd_sim_cython.discrete_bessel_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __pyx_r = 0;
   __pyx_L0:;
   return __pyx_r;
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_13bd_sim_cython_bd_one_path[] = "\n    simulate a birth-death proecss X at time t.\n    \n    :param t: float, terminal time\n    :param x0: initial value of X\n    :return: in-place\n    ";
-static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13bd_sim_cython_1discrete_bessel_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_13bd_sim_cython_discrete_bessel_one_path[] = "\n    simulate a birth-death proecss X at time t.\n    \n    :param t: float, terminal time\n    :param x0: initial value of X\n    :return: in-place\n    ";
+static PyObject *__pyx_pw_13bd_sim_cython_1discrete_bessel_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_t;
   long __pyx_v_x0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("bd_one_path (wrapper)", 0);
+  __Pyx_RefNannySetupContext("discrete_bessel_one_path (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t,&__pyx_n_s_x0,0};
     PyObject* values[2] = {0,0};
@@ -2353,11 +2370,11 @@ static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x0)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bd_one_path", 1, 2, 2, 1); __PYX_ERR(0, 11, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("discrete_bessel_one_path", 1, 2, 2, 1); __PYX_ERR(0, 11, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bd_one_path") < 0)) __PYX_ERR(0, 11, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "discrete_bessel_one_path") < 0)) __PYX_ERR(0, 11, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2370,26 +2387,26 @@ static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bd_one_path", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("discrete_bessel_one_path", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("bd_sim_cython.bd_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("bd_sim_cython.discrete_bessel_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_13bd_sim_cython_bd_one_path(__pyx_self, __pyx_v_t, __pyx_v_x0);
+  __pyx_r = __pyx_pf_13bd_sim_cython_discrete_bessel_one_path(__pyx_self, __pyx_v_t, __pyx_v_x0);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0) {
+static PyObject *__pyx_pf_13bd_sim_cython_discrete_bessel_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("bd_one_path", 0);
+  __Pyx_RefNannySetupContext("discrete_bessel_one_path", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_13bd_sim_cython_bd_one_path(__pyx_v_t, __pyx_v_x0, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_13bd_sim_cython_discrete_bessel_one_path(__pyx_v_t, __pyx_v_x0, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2398,7 +2415,7 @@ static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("bd_sim_cython.bd_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("bd_sim_cython.discrete_bessel_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2406,16 +2423,347 @@ static PyObject *__pyx_pf_13bd_sim_cython_bd_one_path(CYTHON_UNUSED PyObject *__
   return __pyx_r;
 }
 
-/* "bd_sim_cython.pyx":41
+/* "bd_sim_cython.pyx":40
+ *             state += 1
+ * 
+ * cpdef long discrete_laguerre_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
+ *     """
+ *     simulate a birth-death proecss X at time t.
+ */
+
+static PyObject *__pyx_pw_13bd_sim_cython_3discrete_laguerre_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static long __pyx_f_13bd_sim_cython_discrete_laguerre_one_path(double __pyx_v_t, long __pyx_v_x0, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  double __pyx_v_s;
+  double __pyx_v_time_to_arrival;
+  double __pyx_v_birth_rate;
+  double __pyx_v_death_rate;
+  double __pyx_v_arrival_rate;
+  double __pyx_v_U;
+  long __pyx_v_state;
+  long __pyx_r;
+  int __pyx_t_1;
+  double __pyx_t_2;
+  int __pyx_t_3;
+
+  /* "bd_sim_cython.pyx":49
+ *     """
+ *     cdef:
+ *         double s = 0, time_to_arrival, birth_rate, death_rate, arrival_rate, U             # <<<<<<<<<<<<<<
+ *         long state = x0
+ * 
+ */
+  __pyx_v_s = 0.0;
+
+  /* "bd_sim_cython.pyx":50
+ *     cdef:
+ *         double s = 0, time_to_arrival, birth_rate, death_rate, arrival_rate, U
+ *         long state = x0             # <<<<<<<<<<<<<<
+ * 
+ *     while True:
+ */
+  __pyx_v_state = __pyx_v_x0;
+
+  /* "bd_sim_cython.pyx":52
+ *         long state = x0
+ * 
+ *     while True:             # <<<<<<<<<<<<<<
+ *         birth_rate = state + 1.0
+ *         death_rate = state * 2.0
+ */
+  while (1) {
+
+    /* "bd_sim_cython.pyx":53
+ * 
+ *     while True:
+ *         birth_rate = state + 1.0             # <<<<<<<<<<<<<<
+ *         death_rate = state * 2.0
+ *         arrival_rate = birth_rate + death_rate
+ */
+    __pyx_v_birth_rate = (__pyx_v_state + 1.0);
+
+    /* "bd_sim_cython.pyx":54
+ *     while True:
+ *         birth_rate = state + 1.0
+ *         death_rate = state * 2.0             # <<<<<<<<<<<<<<
+ *         arrival_rate = birth_rate + death_rate
+ *         U = rand() / (RAND_MAX + 1.0)
+ */
+    __pyx_v_death_rate = (__pyx_v_state * 2.0);
+
+    /* "bd_sim_cython.pyx":55
+ *         birth_rate = state + 1.0
+ *         death_rate = state * 2.0
+ *         arrival_rate = birth_rate + death_rate             # <<<<<<<<<<<<<<
+ *         U = rand() / (RAND_MAX + 1.0)
+ *         time_to_arrival = -log(1 - U) / arrival_rate
+ */
+    __pyx_v_arrival_rate = (__pyx_v_birth_rate + __pyx_v_death_rate);
+
+    /* "bd_sim_cython.pyx":56
+ *         death_rate = state * 2.0
+ *         arrival_rate = birth_rate + death_rate
+ *         U = rand() / (RAND_MAX + 1.0)             # <<<<<<<<<<<<<<
+ *         time_to_arrival = -log(1 - U) / arrival_rate
+ *         s += time_to_arrival
+ */
+    __pyx_t_1 = rand();
+    __pyx_t_2 = (RAND_MAX + 1.0);
+    if (unlikely(__pyx_t_2 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 56, __pyx_L1_error)
+    }
+    __pyx_v_U = (__pyx_t_1 / __pyx_t_2);
+
+    /* "bd_sim_cython.pyx":57
+ *         arrival_rate = birth_rate + death_rate
+ *         U = rand() / (RAND_MAX + 1.0)
+ *         time_to_arrival = -log(1 - U) / arrival_rate             # <<<<<<<<<<<<<<
+ *         s += time_to_arrival
+ *         # stop and return when exceeds target time
+ */
+    __pyx_t_2 = (-log((1.0 - __pyx_v_U)));
+    if (unlikely(__pyx_v_arrival_rate == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 57, __pyx_L1_error)
+    }
+    __pyx_v_time_to_arrival = (__pyx_t_2 / __pyx_v_arrival_rate);
+
+    /* "bd_sim_cython.pyx":58
+ *         U = rand() / (RAND_MAX + 1.0)
+ *         time_to_arrival = -log(1 - U) / arrival_rate
+ *         s += time_to_arrival             # <<<<<<<<<<<<<<
+ *         # stop and return when exceeds target time
+ *         if s > t:
+ */
+    __pyx_v_s = (__pyx_v_s + __pyx_v_time_to_arrival);
+
+    /* "bd_sim_cython.pyx":60
+ *         s += time_to_arrival
+ *         # stop and return when exceeds target time
+ *         if s > t:             # <<<<<<<<<<<<<<
+ *             return state
+ *         # update
+ */
+    __pyx_t_3 = ((__pyx_v_s > __pyx_v_t) != 0);
+    if (__pyx_t_3) {
+
+      /* "bd_sim_cython.pyx":61
+ *         # stop and return when exceeds target time
+ *         if s > t:
+ *             return state             # <<<<<<<<<<<<<<
+ *         # update
+ *         U = rand() / (RAND_MAX + 1.0)
+ */
+      __pyx_r = __pyx_v_state;
+      goto __pyx_L0;
+
+      /* "bd_sim_cython.pyx":60
+ *         s += time_to_arrival
+ *         # stop and return when exceeds target time
+ *         if s > t:             # <<<<<<<<<<<<<<
+ *             return state
+ *         # update
+ */
+    }
+
+    /* "bd_sim_cython.pyx":63
+ *             return state
+ *         # update
+ *         U = rand() / (RAND_MAX + 1.0)             # <<<<<<<<<<<<<<
+ *         if U < (death_rate / arrival_rate):
+ *             state -= 1
+ */
+    __pyx_t_1 = rand();
+    __pyx_t_2 = (RAND_MAX + 1.0);
+    if (unlikely(__pyx_t_2 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 63, __pyx_L1_error)
+    }
+    __pyx_v_U = (__pyx_t_1 / __pyx_t_2);
+
+    /* "bd_sim_cython.pyx":64
+ *         # update
+ *         U = rand() / (RAND_MAX + 1.0)
+ *         if U < (death_rate / arrival_rate):             # <<<<<<<<<<<<<<
+ *             state -= 1
+ *         else:
+ */
+    if (unlikely(__pyx_v_arrival_rate == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 64, __pyx_L1_error)
+    }
+    __pyx_t_3 = ((__pyx_v_U < (__pyx_v_death_rate / __pyx_v_arrival_rate)) != 0);
+    if (__pyx_t_3) {
+
+      /* "bd_sim_cython.pyx":65
+ *         U = rand() / (RAND_MAX + 1.0)
+ *         if U < (death_rate / arrival_rate):
+ *             state -= 1             # <<<<<<<<<<<<<<
+ *         else:
+ *             state += 1
+ */
+      __pyx_v_state = (__pyx_v_state - 1);
+
+      /* "bd_sim_cython.pyx":64
+ *         # update
+ *         U = rand() / (RAND_MAX + 1.0)
+ *         if U < (death_rate / arrival_rate):             # <<<<<<<<<<<<<<
+ *             state -= 1
+ *         else:
+ */
+      goto __pyx_L6;
+    }
+
+    /* "bd_sim_cython.pyx":67
+ *             state -= 1
+ *         else:
+ *             state += 1             # <<<<<<<<<<<<<<
  * 
  * 
- * cpdef void bd_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
+ */
+    /*else*/ {
+      __pyx_v_state = (__pyx_v_state + 1);
+    }
+    __pyx_L6:;
+  }
+
+  /* "bd_sim_cython.pyx":40
+ *             state += 1
+ * 
+ * cpdef long discrete_laguerre_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
+ *     """
+ *     simulate a birth-death proecss X at time t.
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("bd_sim_cython.discrete_laguerre_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __pyx_r = 0;
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_13bd_sim_cython_3discrete_laguerre_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_13bd_sim_cython_2discrete_laguerre_one_path[] = "\n    simulate a birth-death proecss X at time t.\n\n    :param t: float, terminal time\n    :param x0: initial value of X\n    :return: in-place\n    ";
+static PyObject *__pyx_pw_13bd_sim_cython_3discrete_laguerre_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_t;
+  long __pyx_v_x0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("discrete_laguerre_one_path (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t,&__pyx_n_s_x0,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_t)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x0)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("discrete_laguerre_one_path", 1, 2, 2, 1); __PYX_ERR(0, 40, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "discrete_laguerre_one_path") < 0)) __PYX_ERR(0, 40, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+    }
+    __pyx_v_t = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_t == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_x0 = __Pyx_PyInt_As_long(values[1]); if (unlikely((__pyx_v_x0 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("discrete_laguerre_one_path", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 40, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("bd_sim_cython.discrete_laguerre_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_13bd_sim_cython_2discrete_laguerre_one_path(__pyx_self, __pyx_v_t, __pyx_v_x0);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_13bd_sim_cython_2discrete_laguerre_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("discrete_laguerre_one_path", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_13bd_sim_cython_discrete_laguerre_one_path(__pyx_v_t, __pyx_v_x0, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("bd_sim_cython.discrete_laguerre_one_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "bd_sim_cython.pyx":70
+ * 
+ * 
+ * cpdef void discrete_bessel_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
  *     cdef:
  *         Py_ssize_t iPath
  */
 
-static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, CYTHON_UNUSED long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_bd_sim *__pyx_optional_args) {
+static PyObject *__pyx_pw_13bd_sim_cython_5discrete_bessel_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static void __pyx_f_13bd_sim_cython_discrete_bessel_sim(double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, CYTHON_UNUSED long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_discrete_bessel_sim *__pyx_optional_args) {
   int __pyx_v_num_threads = ((int)4);
   Py_ssize_t __pyx_v_iPath;
   __Pyx_RefNannyDeclarations
@@ -2425,19 +2773,19 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
   Py_ssize_t __pyx_t_4;
   int __pyx_t_5;
   Py_ssize_t __pyx_t_6;
-  __Pyx_RefNannySetupContext("bd_sim", 0);
+  __Pyx_RefNannySetupContext("discrete_bessel_sim", 0);
   if (__pyx_optional_args) {
     if (__pyx_optional_args->__pyx_n > 0) {
       __pyx_v_num_threads = __pyx_optional_args->num_threads;
     }
   }
 
-  /* "bd_sim_cython.pyx":45
+  /* "bd_sim_cython.pyx":74
  *         Py_ssize_t iPath
  * 
  *     with nogil, parallel(num_threads=num_threads):             # <<<<<<<<<<<<<<
  *         for iPath in prange(num_path, schedule='dynamic'):
- *             output[iPath] = bd_one_path(t, x0[iPath])
+ *             output[iPath] = discrete_bessel_one_path(t, x0[iPath])
  */
   {
       #ifdef WITH_THREAD
@@ -2468,11 +2816,11 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
                 Py_BEGIN_ALLOW_THREADS
                 #endif /* _OPENMP */
 
-                /* "bd_sim_cython.pyx":46
+                /* "bd_sim_cython.pyx":75
  * 
  *     with nogil, parallel(num_threads=num_threads):
  *         for iPath in prange(num_path, schedule='dynamic'):             # <<<<<<<<<<<<<<
- *             output[iPath] = bd_one_path(t, x0[iPath])
+ *             output[iPath] = discrete_bessel_one_path(t, x0[iPath])
  * 
  */
                 __pyx_t_1 = __pyx_v_num_path;
@@ -2494,10 +2842,10 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
                             {
                                 __pyx_v_iPath = (Py_ssize_t)(0 + 1 * __pyx_t_2);
 
-                                /* "bd_sim_cython.pyx":47
+                                /* "bd_sim_cython.pyx":76
  *     with nogil, parallel(num_threads=num_threads):
  *         for iPath in prange(num_path, schedule='dynamic'):
- *             output[iPath] = bd_one_path(t, x0[iPath])             # <<<<<<<<<<<<<<
+ *             output[iPath] = discrete_bessel_one_path(t, x0[iPath])             # <<<<<<<<<<<<<<
  * 
  *     return
  */
@@ -2509,7 +2857,7 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
                                 } else if (unlikely(__pyx_t_4 >= __pyx_v_x0.shape[0])) __pyx_t_5 = 0;
                                 if (unlikely(__pyx_t_5 != -1)) {
                                   __Pyx_RaiseBufferIndexErrorNogil(__pyx_t_5);
-                                  __PYX_ERR(0, 47, __pyx_L12_error)
+                                  __PYX_ERR(0, 76, __pyx_L12_error)
                                 }
                                 __pyx_t_6 = __pyx_v_iPath;
                                 __pyx_t_5 = -1;
@@ -2519,9 +2867,9 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
                                 } else if (unlikely(__pyx_t_6 >= __pyx_v_output.shape[0])) __pyx_t_5 = 0;
                                 if (unlikely(__pyx_t_5 != -1)) {
                                   __Pyx_RaiseBufferIndexErrorNogil(__pyx_t_5);
-                                  __PYX_ERR(0, 47, __pyx_L12_error)
+                                  __PYX_ERR(0, 76, __pyx_L12_error)
                                 }
-                                *((long *) ( /* dim=0 */ (__pyx_v_output.data + __pyx_t_6 * __pyx_v_output.strides[0]) )) = __pyx_f_13bd_sim_cython_bd_one_path(__pyx_v_t, (*((long *) ( /* dim=0 */ (__pyx_v_x0.data + __pyx_t_4 * __pyx_v_x0.strides[0]) ))), 0);
+                                *((long *) ( /* dim=0 */ (__pyx_v_output.data + __pyx_t_6 * __pyx_v_output.strides[0]) )) = __pyx_f_13bd_sim_cython_discrete_bessel_one_path(__pyx_v_t, (*((long *) ( /* dim=0 */ (__pyx_v_x0.data + __pyx_t_4 * __pyx_v_x0.strides[0]) ))), 0);
                                 goto __pyx_L15;
                                 __pyx_L12_error:;
                                 {
@@ -2646,12 +2994,12 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
         #endif
       }
 
-      /* "bd_sim_cython.pyx":45
+      /* "bd_sim_cython.pyx":74
  *         Py_ssize_t iPath
  * 
  *     with nogil, parallel(num_threads=num_threads):             # <<<<<<<<<<<<<<
  *         for iPath in prange(num_path, schedule='dynamic'):
- *             output[iPath] = bd_one_path(t, x0[iPath])
+ *             output[iPath] = discrete_bessel_one_path(t, x0[iPath])
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -2672,31 +3020,33 @@ static void __pyx_f_13bd_sim_cython_bd_sim(double __pyx_v_t, __Pyx_memviewslice 
       }
   }
 
-  /* "bd_sim_cython.pyx":49
- *             output[iPath] = bd_one_path(t, x0[iPath])
+  /* "bd_sim_cython.pyx":78
+ *             output[iPath] = discrete_bessel_one_path(t, x0[iPath])
  * 
  *     return             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
   goto __pyx_L0;
 
-  /* "bd_sim_cython.pyx":41
+  /* "bd_sim_cython.pyx":70
  * 
  * 
- * cpdef void bd_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
+ * cpdef void discrete_bessel_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
  *     cdef:
  *         Py_ssize_t iPath
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("bd_sim_cython.bd_sim", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("bd_sim_cython.discrete_bessel_sim", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13bd_sim_cython_5discrete_bessel_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_13bd_sim_cython_5discrete_bessel_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_t;
   __Pyx_memviewslice __pyx_v_x0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   long __pyx_v_num_path;
@@ -2704,7 +3054,7 @@ static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject
   int __pyx_v_num_threads;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("bd_sim (wrapper)", 0);
+  __Pyx_RefNannySetupContext("discrete_bessel_sim (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t,&__pyx_n_s_x0,&__pyx_n_s_num_path,&__pyx_n_s_output,&__pyx_n_s_num_threads,0};
     PyObject* values[5] = {0,0,0,0,0};
@@ -2734,19 +3084,19 @@ static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x0)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 1); __PYX_ERR(0, 41, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("discrete_bessel_sim", 0, 4, 5, 1); __PYX_ERR(0, 70, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_path)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 2); __PYX_ERR(0, 41, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("discrete_bessel_sim", 0, 4, 5, 2); __PYX_ERR(0, 70, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, 3); __PYX_ERR(0, 41, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("discrete_bessel_sim", 0, 4, 5, 3); __PYX_ERR(0, 70, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -2756,7 +3106,7 @@ static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bd_sim") < 0)) __PYX_ERR(0, 41, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "discrete_bessel_sim") < 0)) __PYX_ERR(0, 70, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2770,44 +3120,44 @@ static PyObject *__pyx_pw_13bd_sim_cython_3bd_sim(PyObject *__pyx_self, PyObject
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_t = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_t == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L3_error)
-    __pyx_v_x0 = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_x0.memview)) __PYX_ERR(0, 41, __pyx_L3_error)
-    __pyx_v_num_path = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_num_path == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L3_error)
-    __pyx_v_output = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_output.memview)) __PYX_ERR(0, 41, __pyx_L3_error)
+    __pyx_v_t = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_t == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L3_error)
+    __pyx_v_x0 = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_x0.memview)) __PYX_ERR(0, 70, __pyx_L3_error)
+    __pyx_v_num_path = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_num_path == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L3_error)
+    __pyx_v_output = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_output.memview)) __PYX_ERR(0, 70, __pyx_L3_error)
     if (values[4]) {
-      __pyx_v_num_threads = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_num_threads == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L3_error)
+      __pyx_v_num_threads = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_num_threads == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L3_error)
     } else {
       __pyx_v_num_threads = ((int)4);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bd_sim", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 41, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("discrete_bessel_sim", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 70, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("bd_sim_cython.bd_sim", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("bd_sim_cython.discrete_bessel_sim", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_13bd_sim_cython_2bd_sim(__pyx_self, __pyx_v_t, __pyx_v_x0, __pyx_v_num_path, __pyx_v_output, __pyx_v_num_threads);
+  __pyx_r = __pyx_pf_13bd_sim_cython_4discrete_bessel_sim(__pyx_self, __pyx_v_t, __pyx_v_x0, __pyx_v_num_path, __pyx_v_output, __pyx_v_num_threads);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13bd_sim_cython_2bd_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads) {
+static PyObject *__pyx_pf_13bd_sim_cython_4discrete_bessel_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  struct __pyx_opt_args_13bd_sim_cython_bd_sim __pyx_t_1;
+  struct __pyx_opt_args_13bd_sim_cython_discrete_bessel_sim __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
-  __Pyx_RefNannySetupContext("bd_sim", 0);
+  __Pyx_RefNannySetupContext("discrete_bessel_sim", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_x0.memview)) { __Pyx_RaiseUnboundLocalError("x0"); __PYX_ERR(0, 41, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_output.memview)) { __Pyx_RaiseUnboundLocalError("output"); __PYX_ERR(0, 41, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_x0.memview)) { __Pyx_RaiseUnboundLocalError("x0"); __PYX_ERR(0, 70, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_output.memview)) { __Pyx_RaiseUnboundLocalError("output"); __PYX_ERR(0, 70, __pyx_L1_error) }
   __pyx_t_1.__pyx_n = 1;
   __pyx_t_1.num_threads = __pyx_v_num_threads;
-  __pyx_f_13bd_sim_cython_bd_sim(__pyx_v_t, __pyx_v_x0, __pyx_v_num_path, __pyx_v_output, 0, &__pyx_t_1); 
-  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_f_13bd_sim_cython_discrete_bessel_sim(__pyx_v_t, __pyx_v_x0, __pyx_v_num_path, __pyx_v_output, 0, &__pyx_t_1); 
+  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -2816,7 +3166,427 @@ static PyObject *__pyx_pf_13bd_sim_cython_2bd_sim(CYTHON_UNUSED PyObject *__pyx_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("bd_sim_cython.bd_sim", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("bd_sim_cython.discrete_bessel_sim", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_x0, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_output, 1);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "bd_sim_cython.pyx":81
+ * 
+ * 
+ * cpdef void discrete_laguerre_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         Py_ssize_t iPath
+ */
+
+static PyObject *__pyx_pw_13bd_sim_cython_7discrete_laguerre_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static void __pyx_f_13bd_sim_cython_discrete_laguerre_sim(double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, CYTHON_UNUSED long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_discrete_laguerre_sim *__pyx_optional_args) {
+  int __pyx_v_num_threads = ((int)4);
+  Py_ssize_t __pyx_v_iPath;
+  __Pyx_RefNannyDeclarations
+  long __pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  int __pyx_t_5;
+  Py_ssize_t __pyx_t_6;
+  __Pyx_RefNannySetupContext("discrete_laguerre_sim", 0);
+  if (__pyx_optional_args) {
+    if (__pyx_optional_args->__pyx_n > 0) {
+      __pyx_v_num_threads = __pyx_optional_args->num_threads;
+    }
+  }
+
+  /* "bd_sim_cython.pyx":85
+ *         Py_ssize_t iPath
+ * 
+ *     with nogil, parallel(num_threads=num_threads):             # <<<<<<<<<<<<<<
+ *         for iPath in prange(num_path, schedule='dynamic'):
+ *             output[iPath] = discrete_laguerre_one_path(t, x0[iPath])
+ */
+  {
+      #ifdef WITH_THREAD
+      PyThreadState *_save;
+      Py_UNBLOCK_THREADS
+      __Pyx_FastGIL_Remember();
+      #endif
+      /*try:*/ {
+        {
+            const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
+            PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
+            int __pyx_parallel_why;
+            __pyx_parallel_why = 0;
+            #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+                #undef likely
+                #undef unlikely
+                #define likely(x)   (x)
+                #define unlikely(x) (x)
+            #endif
+            #ifdef _OPENMP
+            #pragma omp parallel  private(__pyx_t_1, __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb) num_threads(__pyx_v_num_threads)
+            #endif /* _OPENMP */
+            {
+                #ifdef _OPENMP
+                #ifdef WITH_THREAD
+                PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                #endif
+                Py_BEGIN_ALLOW_THREADS
+                #endif /* _OPENMP */
+
+                /* "bd_sim_cython.pyx":86
+ * 
+ *     with nogil, parallel(num_threads=num_threads):
+ *         for iPath in prange(num_path, schedule='dynamic'):             # <<<<<<<<<<<<<<
+ *             output[iPath] = discrete_laguerre_one_path(t, x0[iPath])
+ * 
+ */
+                __pyx_t_1 = __pyx_v_num_path;
+                if ((1 == 0)) abort();
+                {
+                    Py_ssize_t __pyx_parallel_temp0 = ((Py_ssize_t)0xbad0bad0);
+                    const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
+                    PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
+                    int __pyx_parallel_why;
+                    __pyx_parallel_why = 0;
+                    __pyx_t_3 = (__pyx_t_1 - 0 + 1 - 1/abs(1)) / 1;
+                    if (__pyx_t_3 > 0)
+                    {
+                        #ifdef _OPENMP
+                        #pragma omp for firstprivate(__pyx_v_iPath) lastprivate(__pyx_v_iPath) schedule(dynamic)
+                        #endif /* _OPENMP */
+                        for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_3; __pyx_t_2++){
+                            if (__pyx_parallel_why < 2)
+                            {
+                                __pyx_v_iPath = (Py_ssize_t)(0 + 1 * __pyx_t_2);
+
+                                /* "bd_sim_cython.pyx":87
+ *     with nogil, parallel(num_threads=num_threads):
+ *         for iPath in prange(num_path, schedule='dynamic'):
+ *             output[iPath] = discrete_laguerre_one_path(t, x0[iPath])             # <<<<<<<<<<<<<<
+ * 
+ *     return
+ */
+                                __pyx_t_4 = __pyx_v_iPath;
+                                __pyx_t_5 = -1;
+                                if (__pyx_t_4 < 0) {
+                                  __pyx_t_4 += __pyx_v_x0.shape[0];
+                                  if (unlikely(__pyx_t_4 < 0)) __pyx_t_5 = 0;
+                                } else if (unlikely(__pyx_t_4 >= __pyx_v_x0.shape[0])) __pyx_t_5 = 0;
+                                if (unlikely(__pyx_t_5 != -1)) {
+                                  __Pyx_RaiseBufferIndexErrorNogil(__pyx_t_5);
+                                  __PYX_ERR(0, 87, __pyx_L12_error)
+                                }
+                                __pyx_t_6 = __pyx_v_iPath;
+                                __pyx_t_5 = -1;
+                                if (__pyx_t_6 < 0) {
+                                  __pyx_t_6 += __pyx_v_output.shape[0];
+                                  if (unlikely(__pyx_t_6 < 0)) __pyx_t_5 = 0;
+                                } else if (unlikely(__pyx_t_6 >= __pyx_v_output.shape[0])) __pyx_t_5 = 0;
+                                if (unlikely(__pyx_t_5 != -1)) {
+                                  __Pyx_RaiseBufferIndexErrorNogil(__pyx_t_5);
+                                  __PYX_ERR(0, 87, __pyx_L12_error)
+                                }
+                                *((long *) ( /* dim=0 */ (__pyx_v_output.data + __pyx_t_6 * __pyx_v_output.strides[0]) )) = __pyx_f_13bd_sim_cython_discrete_laguerre_one_path(__pyx_v_t, (*((long *) ( /* dim=0 */ (__pyx_v_x0.data + __pyx_t_4 * __pyx_v_x0.strides[0]) ))), 0);
+                                goto __pyx_L15;
+                                __pyx_L12_error:;
+                                {
+                                    #ifdef WITH_THREAD
+                                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                                    #endif
+                                    #ifdef _OPENMP
+                                    #pragma omp flush(__pyx_parallel_exc_type)
+                                    #endif /* _OPENMP */
+                                    if (!__pyx_parallel_exc_type) {
+                                      __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                                      __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                                      __Pyx_GOTREF(__pyx_parallel_exc_type);
+                                    }
+                                    #ifdef WITH_THREAD
+                                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                                    #endif
+                                }
+                                __pyx_parallel_why = 4;
+                                goto __pyx_L14;
+                                __pyx_L14:;
+                                #ifdef _OPENMP
+                                #pragma omp critical(__pyx_parallel_lastprivates1)
+                                #endif /* _OPENMP */
+                                {
+                                    __pyx_parallel_temp0 = __pyx_v_iPath;
+                                }
+                                __pyx_L15:;
+                                #ifdef _OPENMP
+                                #pragma omp flush(__pyx_parallel_why)
+                                #endif /* _OPENMP */
+                            }
+                        }
+                    }
+                    if (__pyx_parallel_exc_type) {
+                      /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
+                      __pyx_parallel_why = 4;
+                    }
+                    if (__pyx_parallel_why) {
+                      __pyx_v_iPath = __pyx_parallel_temp0;
+                      switch (__pyx_parallel_why) {
+                            case 4:
+                        {
+                            #ifdef WITH_THREAD
+                            PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                            #endif
+                            __Pyx_GIVEREF(__pyx_parallel_exc_type);
+                            __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
+                            __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
+                            #ifdef WITH_THREAD
+                            __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                            #endif
+                        }
+                        goto __pyx_L8_error;
+                      }
+                    }
+                }
+                goto __pyx_L17;
+                __pyx_L8_error:;
+                {
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    #ifdef _OPENMP
+                    #pragma omp flush(__pyx_parallel_exc_type)
+                    #endif /* _OPENMP */
+                    if (!__pyx_parallel_exc_type) {
+                      __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                      __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                      __Pyx_GOTREF(__pyx_parallel_exc_type);
+                    }
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                }
+                __pyx_parallel_why = 4;
+                goto __pyx_L17;
+                __pyx_L17:;
+                #ifdef _OPENMP
+                Py_END_ALLOW_THREADS
+                #else
+{
+#ifdef WITH_THREAD
+                PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                #endif
+                #endif /* _OPENMP */
+                /* Clean up any temporaries */
+                #ifdef WITH_THREAD
+                __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                #endif
+                #ifndef _OPENMP
+}
+#endif /* _OPENMP */
+            }
+            if (__pyx_parallel_exc_type) {
+              /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
+              __pyx_parallel_why = 4;
+            }
+            if (__pyx_parallel_why) {
+              switch (__pyx_parallel_why) {
+                    case 4:
+                {
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    __Pyx_GIVEREF(__pyx_parallel_exc_type);
+                    __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
+                    __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                }
+                goto __pyx_L4_error;
+              }
+            }
+        }
+        #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+            #undef likely
+            #undef unlikely
+            #define likely(x)   __builtin_expect(!!(x), 1)
+            #define unlikely(x) __builtin_expect(!!(x), 0)
+        #endif
+      }
+
+      /* "bd_sim_cython.pyx":85
+ *         Py_ssize_t iPath
+ * 
+ *     with nogil, parallel(num_threads=num_threads):             # <<<<<<<<<<<<<<
+ *         for iPath in prange(num_path, schedule='dynamic'):
+ *             output[iPath] = discrete_laguerre_one_path(t, x0[iPath])
+ */
+      /*finally:*/ {
+        /*normal exit:*/{
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L5;
+        }
+        __pyx_L4_error: {
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L1_error;
+        }
+        __pyx_L5:;
+      }
+  }
+
+  /* "bd_sim_cython.pyx":89
+ *             output[iPath] = discrete_laguerre_one_path(t, x0[iPath])
+ * 
+ *     return             # <<<<<<<<<<<<<<
+ */
+  goto __pyx_L0;
+
+  /* "bd_sim_cython.pyx":81
+ * 
+ * 
+ * cpdef void discrete_laguerre_sim(double t, long[:] x0, long num_path, long[:] output, int num_threads=4):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         Py_ssize_t iPath
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("bd_sim_cython.discrete_laguerre_sim", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_13bd_sim_cython_7discrete_laguerre_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_13bd_sim_cython_7discrete_laguerre_sim(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_t;
+  __Pyx_memviewslice __pyx_v_x0 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  long __pyx_v_num_path;
+  __Pyx_memviewslice __pyx_v_output = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_v_num_threads;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("discrete_laguerre_sim (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t,&__pyx_n_s_x0,&__pyx_n_s_num_path,&__pyx_n_s_output,&__pyx_n_s_num_threads,0};
+    PyObject* values[5] = {0,0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_t)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x0)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("discrete_laguerre_sim", 0, 4, 5, 1); __PYX_ERR(0, 81, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_path)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("discrete_laguerre_sim", 0, 4, 5, 2); __PYX_ERR(0, 81, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("discrete_laguerre_sim", 0, 4, 5, 3); __PYX_ERR(0, 81, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_threads);
+          if (value) { values[4] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "discrete_laguerre_sim") < 0)) __PYX_ERR(0, 81, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_t = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_t == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L3_error)
+    __pyx_v_x0 = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_x0.memview)) __PYX_ERR(0, 81, __pyx_L3_error)
+    __pyx_v_num_path = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_num_path == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L3_error)
+    __pyx_v_output = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_output.memview)) __PYX_ERR(0, 81, __pyx_L3_error)
+    if (values[4]) {
+      __pyx_v_num_threads = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_num_threads == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L3_error)
+    } else {
+      __pyx_v_num_threads = ((int)4);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("discrete_laguerre_sim", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 81, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("bd_sim_cython.discrete_laguerre_sim", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_13bd_sim_cython_6discrete_laguerre_sim(__pyx_self, __pyx_v_t, __pyx_v_x0, __pyx_v_num_path, __pyx_v_output, __pyx_v_num_threads);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_13bd_sim_cython_6discrete_laguerre_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  struct __pyx_opt_args_13bd_sim_cython_discrete_laguerre_sim __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  __Pyx_RefNannySetupContext("discrete_laguerre_sim", 0);
+  __Pyx_XDECREF(__pyx_r);
+  if (unlikely(!__pyx_v_x0.memview)) { __Pyx_RaiseUnboundLocalError("x0"); __PYX_ERR(0, 81, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_output.memview)) { __Pyx_RaiseUnboundLocalError("output"); __PYX_ERR(0, 81, __pyx_L1_error) }
+  __pyx_t_1.__pyx_n = 1;
+  __pyx_t_1.num_threads = __pyx_v_num_threads;
+  __pyx_f_13bd_sim_cython_discrete_laguerre_sim(__pyx_v_t, __pyx_v_x0, __pyx_v_num_path, __pyx_v_output, 0, &__pyx_t_1); 
+  __pyx_t_2 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("bd_sim_cython.discrete_laguerre_sim", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_x0, 1);
@@ -16365,8 +17135,10 @@ static PyTypeObject __pyx_type___pyx_memoryviewslice = {
 };
 
 static PyMethodDef __pyx_methods[] = {
-  {"bd_one_path", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_1bd_one_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_13bd_sim_cython_bd_one_path},
-  {"bd_sim", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_3bd_sim, METH_VARARGS|METH_KEYWORDS, 0},
+  {"discrete_bessel_one_path", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_1discrete_bessel_one_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_13bd_sim_cython_discrete_bessel_one_path},
+  {"discrete_laguerre_one_path", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_3discrete_laguerre_one_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_13bd_sim_cython_2discrete_laguerre_one_path},
+  {"discrete_bessel_sim", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_5discrete_bessel_sim, METH_VARARGS|METH_KEYWORDS, 0},
+  {"discrete_laguerre_sim", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_7discrete_laguerre_sim, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
