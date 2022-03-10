@@ -1,15 +1,16 @@
-import BD_simulator, BirthDeathBessel
+import BD_simulator
 import numpy as np
 from scipy.special import jv, laguerre, poch
-from math import comb, factorial, exp, sqrt
+from math import comb, factorial, exp, sqrt, log
 
-def estimate_SqBesselBD(N = 10**6, t = 0, x0 = [0], test = 'Bessel', args = []):
+def MC_BESQ_gateway(N = 10**6, t = 0, x0 = 0, test = 'Bessel', args = []):
 	"""
-	Test Bessel BD simulator against exact formulas for Bessel functions
-
+	Monte Carlo estimator of expected BESQ against test functions
 	:param N: int, Number of simulations
 	:param T: positive float, Simulation horizon
-	:param x0: initial values of X, positive double
+	:param x0: initial value of X
+	:param test: defines test function
+	:args: arguments to define test function
 	"""
 	if test == 'Bessel':
 		f = lambda n : laguerre(n)(1)
@@ -23,21 +24,41 @@ def estimate_SqBesselBD(N = 10**6, t = 0, x0 = [0], test = 'Bessel', args = []):
 	else:
 		f = lambda n : 0
 
+	def poisson_x0():
+		return np.random.poisson(x0)
+	xt_array = BD_simulator.bd_simulator(t, x0=poisson_x0, num_paths=N, method = 'Bessel', num_threads=4)
+	return np.mean(np.vectorize(f)(xt_array))
 
-	x0 = np.array(x0)
-	if x0.ndim == 0:
-		x0 = np.array([x0])
-	y0_poisson = np.array([np.random.poisson(x, N) for x in x0]).flatten()  # Map x0 by Poisson kernel
-	# def poisson_x0():
-	# 	return np.random.poisson(x0)
-	# last_states = BD_simulator.bd_simulator(T, x0=poisson_x0, num_paths=N, num_threads=1).reshape(len(x0), N)
-	last_states = np.array([np.random.binomial(n, 0.5) for n in y0_poisson]).reshape(len(x0), N) #placeholder for simulation
-	estimate = exp(t)*np.mean(np.vectorize(f)(last_states), axis = 1)
-	return estimate
+def MC_BESQviaLaguerre_gateway(N = 10**6, t = 0, x0 = 0, test = 'Bessel', args = []):
+	"""
+	Test Bessel BD simulator against exact formulas for Bessel functions
 
-def estimate_SqBessel(t = 0, x0 = [0], test = 'Bessel', args = []):
+	:param N: int, Number of simulations
+	:param T: positive float, Simulation horizon
+	:param x0: initial value of X
+	"""
 	if test == 'Bessel':
-		f = jv
+		f = lambda n : laguerre(n)(1 + t)
+	elif test == 'poly':
+		if len(args) < 1:
+			print('No coefficients provided')
+			coef = []
+		else: 
+			coef = [args[0][i]*((1 + t)**i) for i in range(len(args[0]))]
+		f = lambda n : discrete_poly(n, coef)
+	else:
+		f = lambda n : 0
+
+	def poisson_x0():
+		return np.random.poisson(x0)
+	xt_array = BD_simulator.bd_simulator(t = log(t + 1), x0=poisson_x0, num_paths=N, method = 'Laguerre', num_threads=4)
+	return np.mean(np.vectorize(f)(xt_array))
+
+
+def estimate_SqBessel(t = 0, x0 = 0, test = 'Bessel', args = []):
+	# DO NOT USE YET
+	if test == 'Bessel':
+		f = lambda x : exp(-t)*jv(0, 2*np.sqrt(x))
 	elif test == 'poly':
 		if len(args) < 1:
 			print('No coefficients provided')
@@ -47,19 +68,16 @@ def estimate_SqBessel(t = 0, x0 = [0], test = 'Bessel', args = []):
 		f = lambda x : np.polyval(coef, x)
 	else:
 		f = lambda x : 0
-
-	x0 = np.array(x0)
-	if x0.ndim == 0:
-		x0 = np.array([x0])
-	estimate = np.vectorize()(0, 2*np.sqrt(x0))
+	estimate = f(x0)
 	return estimate
 
 def discrete_poly(n, coef):
 	return sum([coef[i]*poch(n - i + 1, i) for i in range(len(coef)) if n >= i])
 
 
-x0 = range(10)
+x0 = 1
 coef = [1]
-print(estimate_SqBesselBD(N = 10, t = 1, x0 = x0, test = 'poly', args = [coef]))
-# print(estimate_SqBessel(t = 1, x0 = x0))
+t = 1
+print(estimate_SqBesselBD(N = 10, t = t, x0 = x0, test = 'Bessel', args = []))
+print(estimate_SqBessel(t = t, x0 = x0))
 
