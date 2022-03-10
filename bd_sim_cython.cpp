@@ -7,6 +7,7 @@
         "extra_compile_args": [
             "-std=c++17",
             "-O3",
+            "-Xpreprocessor",
             "-fopenmp"
         ],
         "extra_link_args": [
@@ -2175,7 +2176,7 @@ static PyObject *__pyx_codeobj__25;
  * 
  * cpdef long bd_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
  *     """
- *     simulate a birth-death proecss X at time t.
+ *     simulate a birth-death process X at time t.
  */
 
 static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
@@ -2406,7 +2407,7 @@ static long __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
  * 
  * cpdef long bd_one_path(double t, long x0) nogil:             # <<<<<<<<<<<<<<
  *     """
- *     simulate a birth-death proecss X at time t.
+ *     simulate a birth-death process X at time t.
  */
 
   /* function exit code */
@@ -2421,7 +2422,7 @@ static long __pyx_f_13bd_sim_cython_bd_one_path(double __pyx_v_t, long __pyx_v_x
 
 /* Python wrapper */
 static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_13bd_sim_cython_bd_one_path[] = "\n    simulate a birth-death proecss X at time t.\n    \n    :param t: float, terminal time\n    :param x0: initial value of X\n    :return: in-place\n    ";
+static char __pyx_doc_13bd_sim_cython_bd_one_path[] = "\n    simulate a birth-death process X at time t.\n    \n    :param t: float, terminal time\n    :param x0: initial value of X\n    :return: in-place\n    ";
 static PyObject *__pyx_pw_13bd_sim_cython_1bd_one_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_t;
   long __pyx_v_x0;
