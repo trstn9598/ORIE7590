@@ -87,4 +87,3 @@ cpdef void discrete_laguerre_sim(double t, long[:] x0, long num_path, long[:] ou
             output[iPath] = discrete_laguerre_one_path(t, x0[iPath])
 
     return
-
