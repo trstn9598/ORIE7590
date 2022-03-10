@@ -83,7 +83,7 @@ def MC_BESQ_hankel(N = 10**6, t = 0, x0 = 0, test = 'custom', function = lambda 
 	estimates = np.zeros(N)
 	for n in range(N):
 		Z = np.random.exponential(t)
-		estimates[n] = j0(x0*Z)*hankel_modified(Z, f)/t
+		estimates[n] = j0(x0*Z)*hankel_reparam(Z, f)/t
 	return np.mean(estimates)
 
 
@@ -106,7 +106,13 @@ def estimate_SqBessel(t = 0, x0 = 0, test = 'bessel', args = []):
 def discrete_poly(n, coef):
 	return sum([coef[i]*poch(n - i + 1, i) for i in range(len(coef)) if n >= i])
 
-def hankel_modified(z, f):
+def hankel_reparam(z, f):
+	"""
+	Monte Carlo estimator of expected BESQ using Hankel transform and Exponential r.v.
+	Based on S. G. Murray and F. J. Poulin, “hankel: A Python library for performing simple and accurate Hankel transformations”, Journal of Open Source Software, 4(37), 1397, https://doi.org/10.21105/joss.01397
+	:param z: positive float
+	:param f: function in L^2(R_+)
+	"""
 	ht = hankel.HankelTransform(
     	nu= 0,     # The order of the bessel function
     	N = 120,   # Number of steps in the integration
