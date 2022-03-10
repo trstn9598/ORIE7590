@@ -151,7 +151,7 @@
 		\beq L^{(m)}f(x) = x f''(x) + (1 + m - x) f'(x), \quad x \in \R_+, f \in C^2(\R_+). \eeq
 		
 		We will denote $K^{(0)} = K$ and $L^{(0)} = L$. The semigroup $K^{(m)}$ has stationary distribution $\epsilon_m(dx) = \frac{x^m}{\Gamma(m + 1)} e^{-x} \, dx$ ($\epsilon = \epsilon^{(0)}$) and $Q^{(m)}$ is self-adjoint in $L^2(\epsilon_m)$. The Laguerre processes are the stationary analog of the $\besq$ processes and satisfy 
-		\beq \label{eqn:besq_lag} K^{(m)}_t = Q_{e^t - 1} d_{e^{-t}} = d_{e^{-t}} Q_{1 - e^{-t}} \quad t \geq 0, \text{on } L^2(\R_+) . \eeq
+		\beq \label{eqn:besq_lag} K^{(m)}_t = Q_{e^t - 1}^{(m)} d_{e^{-t}} = d_{e^{-t}} Q_{1 - e^{-t}}^{(m)} \quad t \geq 0, \text{on } L^2(\R_+) . \eeq
 		
 	\end{enumerate}
 	
@@ -207,8 +207,8 @@
 		
 		This exponential time complexity can be overcome with the self-similarity of $X^{(B)}$, see \eqref{eqn:self_similar_besq}, which can be written $d_{\alpha} Q_{\alpha t} = Q_{t} d_\alpha$, where $d_\alpha f(x) = f(\alpha x)$ is the dilation operator. This comes with the tradeoff that the simulation estimate variance is increased, but the variance increase should be polynomial in the dilation factor. It follows that simulation will be of complexity will be constant in time. 
 		
-		\item Alternatively, we propose to overcome the exponentially time complexity described above with simulating the $\besq$ process via the Laguerre process, using the relation \eqref{eqn:besq_lag}, in which case we can similar exponentially large times for the $\besq$ process in linear time. In particular, for $t > 1$, $f \in \ell^2(\Z_+)$, $F = \Lambda f$,
-			\beq \E_x[F(X_t^{(B)})] = \E[f(\bb{X}^{L}_{\log (t + 1)}) \mid X_0 \sim \pois(tx)] . \eeq
+		\item Alternatively, we propose to overcome the exponentially time complexity described above with simulating the $\besq$ process via the Laguerre process, using the relation \eqref{eqn:besq_lag}, in which case we can similar exponentially large times for the $\besq$ process in linear time. In particular, for $t \geq  0$, $f \in \ell^2(\Z_+)$, $d_{t + 1}F = \Lambda f_t$,
+			\beq \E_x[F(X_t^{(B)})] = \E[f_t(\bb{X}^{L}_{\log (t + 1)}) \mid X_0 \sim \pois(x)] . \eeq
 			
 			Since, the states for the discrete Laguerre on the RHS will be of size $O(tx)$ on average, noting that mean reversion will drive the process towards $1$, the time complexity of simulation will be $O(tx \log t)$ with high probability. 
 		
@@ -219,7 +219,7 @@
 	
 
 \bibliographystyle{unsrt}
-\bibliography{Determinantal_Semigroups.bib}
+\bibliography{Simulation_notes.bib}
 
 
 \end{document}

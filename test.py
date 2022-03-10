@@ -77,7 +77,7 @@ def discrete_poly(n, coef):
 
 x0 = 0
 coef = [1]
-t = 1
+t = 2
 print(MC_BESQ_gateway(N = 10**4, t = t, x0 = x0, test = 'bessel', args = []))
+print(MC_BESQviaLaguerre_gateway(N = 10**4, t = t, x0 = x0, test = 'bessel', args = []))
 print(estimate_SqBessel(t = t, x0 = x0))
-
