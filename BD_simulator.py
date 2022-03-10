@@ -1,13 +1,14 @@
 # ORIE 7590
 import numpy as np
-from bd_sim_cython import bd_sim
+from bd_sim_cython import discrete_bessel_sim, discrete_laguerre_sim
 
 
-def bd_simulator(t, x0, num_paths, num_threads=4):
+def bd_simulator(t, x0, num_paths, method='bessel', num_threads=4):
     """
     :param t: terminal time, double
     :param x0: initial state, callable or int
     :param num_paths: number of paths
+    :param method: method of simulating birth-death chain, currently support 'bessel' and 'laguerre'
     :param num_threads: number of threads for multiprocessing
     :return: ndarray of simulated result at terminal time
     """
@@ -17,8 +18,10 @@ def bd_simulator(t, x0, num_paths, num_threads=4):
         x0_array = np.array([x0() for _ in range(num_paths)], dtype=np.int64)
 
     output = np.zeros(dtype=np.int64, shape=num_paths)
-
-    bd_sim(t, x0_array, num_paths, output, int(num_threads))
+    if method == 'bessel':
+        discrete_bessel_sim(t, x0_array, num_paths, output, int(num_threads))
+    else:
+        discrete_laguerre_sim(t, x0_array, num_paths, output, int(num_threads))
 
     return output
 
