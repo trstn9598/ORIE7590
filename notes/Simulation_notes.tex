@@ -88,6 +88,7 @@
 \DeclareMathOperator{\Exp}{Exp}
 \DeclareMathOperator{\ent}{Ent}
 \DeclareMathOperator{\Ran}{Ran}
+\DeclareMathOperator{\Gam}{Gamma}
 %\let\span\relax % "Undefine" \span
 \DeclareMathOperator{\Span}{span}
 
@@ -163,29 +164,52 @@
 		\item The \textit{discrete squared Bessel} ($\dbesq_m$) process $\bb{X}^{(B, m)}$ of index $m$ is a birth-death process on $\Z_+$ that has rates
 		\beq \lambda_n = n + m + 1, \quad \mu_n = n , \quad n \in \Z_+. \eeq
 		
-		Let its transition semigroup and generator be denoted $\bb{Q}^{(m)}$ and $\bb{B}^{(m)}$, respectively. The measure $\frk{m}_m(n) = \frac{\Gamma(n + m + 1)}{n! \Gamma(m + 1)}$ is invariant for $\bb{Q}^{(m)}$ and $\bb{Q}^{(m)}$ is self-adjoint in $\ell^2(\frk{m}_m)$. 
+		Let its transition semigroup and generator be denoted $\bb{Q}^{(m)}$ and $\bb{B}^{(m)}$, respectively. The measure $\frk{m}_m(n) = \frac{\Gamma(n + m + 1)}{n! \Gamma(m + 1)}$ is invariant for $\bb{Q}^{(m)}$ and $\bb{Q}^{(m)}$ is self-adjoint in $\ell^2(\frk{m}_m)$. Let us denote $\frk{m} = \frk{m}_0$. 
 
 	
 	
 	\end{enumerate}
 
-	
+\subsection{Intertwining Operators}
+
+	\begin{enumerate}
+		
+		\item Let $\Lambda : C_0(\Z_+) \to C_0(\R_+)$ be the Poisson kernel operator 
+		\beq \label{eqn:poisson_kernel} \Lambda f(x) = \sum_{n \in \Z_+} f(n) \frac{x^n}{n!} e^{-x} , \quad x \in \R_+. \eeq
+		
+		The Poisson kernel operator $\Lambda$ extends to $\ell^2(\Z_+) \to L^2(\R_+)$ and its dual $\Lambda^* : L^2(\R_+) \to \ell^2(\Z_+)$ is the Gamma kernel operator 
+		\beq \label{eqn:gamma_kernel} \Lambda^*g(n) = \int_0^\infty g(x) \frac{x^n}{n!} e^{-x} \, dx . \eeq
+		Moreover, $\Lambda \Lambda^* = Q_1$, the $\besq$-transition kernel at time $1$. 
+		
+	\end{enumerate}
 
 
 \section{Simulation Algorithms and Formulae}
 
 \subsection{Base BESQ case} 
-	Let $\Lambda$ be the Poisson kernel operator 
-	\beq \Lambda f(x) = \sum_{n \in \Z_+} f(n) \frac{x^n}{n!} e^{-x} . \eeq
-	Then, $\Lambda$ extends to $\ell^2(\Z_+) \to L^2(\R_+)$ and for $t \geq 0$, 
+	The Poisson kernel operator $\Lambda$ extends to $\ell^2(\Z_+) \to L^2(\R_+)$ and for $t \geq 0$, 
 	\beq Q_t\Lambda = \Lambda \bb{Q}_t \quad \text{on } \ell^2(\Z_+). \eeq
 	That is, if $f \in \ell^2(\Z_+)$ and $F = \Lambda f \in L^2(\R_+)$, then for a.e. $x \in \R_+$
 	\beq \E_x[F(X_t^{B})] = \E[f(\bb{X}_t^{(B)}) \mid X_0 \sim \pois(x)] . \eeq
 	
+\subsubsection{Modifications:}
+	\begin{enumerate}
+	
+		\item (Self-similarity, see \ref{bessel_self_similar}) Let $t_0$ be a reference time. For $t > 0$, by self-similarity, $Q_t = d_{t_0/t} Q_{t_0} d_{t/t_0}$. Thus, if $F \in L^2(\R_+)$ and $d_{t/t_0} F = \Lambda f_t$, then
+			\beq \E_x[F(X_t^B)] = \E[f_t(\bb{X}^B_{t_0}) \mid \bb{X}^B_0 \sim \pois(xt_0/t)] . \eeq
+			
+		\item (Laguerre Connection, see \ref{lag_connection}) By the $\besq$-Laguerre connection \eqref{eqn:besq_lag}, for $t \geq  0$, $f \in \ell^2(\Z_+)$, $d_{t + 1}F = \Lambda f_t$,
+			\beq \E_x[F(X_t^{B})] = \E[f_t(\bb{X}^{L}_{\log (t + 1)}) \mid X_0 \sim \pois(x)] . \eeq
+			
+		\item (Interweaving with delay) By duality and self-adjointness, for $t \geq 0$,  $Q_{1 + t} = \Lambda \bb{Q}_t \Lambda^*$. In particular, for $f \in L^2(\R_+$), 
+			\beq \E_x[F(X_{1 + t}^{B})] = \E[F(\Gam(\bb{X}_t^{B})) \mid X_0 \sim \pois(x)] . \eeq
+	
+	\end{enumerate}
+	
 \subsection{Base Laguerre case} 
-	The Poisson kernel operator $\Lambda$ extends to $\ell^2(\frk{n}) \to L^2(\epsilon)$ and for $t \geq 0$, 
-	\beq L_t\Lambda = \Lambda \bb{K}_t \quad \text{on } \ell^2(\frk{n}). \eeq
-	That is, if $f \in \ell^2(\frk{n})$ and $F = \Lambda f$, then for a.e. $x \in \R_+$
+	The Poisson kernel operator $\Lambda$ extends to $\ell^2(\frk{m}) \to L^2(\epsilon)$ and for $t \geq 0$, 
+	\beq L_t\Lambda = \Lambda \bb{K}_t \quad \text{on } \ell^2(\frk{m}). \eeq
+	That is, if $f \in \ell^2(\frk{m})$ and $F = \Lambda f$, then for a.e. $x \in \R_+$
 	\beq \E_x[F(X_t^{L})] = \E[f(\bb{X}_t^{(L)}) \mid X_0 \sim \pois(x)] . \eeq
 	
 \subsection{Spectral Simulation of BESQ${}^{(0)}$}
@@ -203,11 +227,11 @@
 \section{Discussion}
 
 	\begin{enumerate}
-		\item We observe that it takes $O(e^t)$ jumps in the $\besq$ process to reach time $t$. Heuristically, this comes from considering the extreme scenario when $X_t^{(B)}$ trends upwards so $X_t^{(B)}(\tau_n) \sim n$ where $\tau_n$ is the $n$th jump time. Then, since the inter-jump times are on average $(X_t^{(B)}(\tau_n))^{-1} \sim n^{-1}$, we have $\tau_N \sim \sum_{n = 1}^N n^{-1} \approx \log N$. Hence, we need $N \sim e^t$ for $\tau_N \sim t$. 
+		\item \label{bessel_self_similar} We observe that it takes $O(e^t)$ jumps in the $\besq$ process to reach time $t$. Heuristically, this comes from considering the extreme scenario when $X_t^{(B)}$ trends upwards so $X_t^{(B)}(\tau_n) \sim n$ where $\tau_n$ is the $n$th jump time. Then, since the inter-jump times are on average $(X_t^{(B)}(\tau_n))^{-1} \sim n^{-1}$, we have $\tau_N \sim \sum_{n = 1}^N n^{-1} \approx \log N$. Hence, we need $N \sim e^t$ for $\tau_N \sim t$. 
 		
 		This exponential time complexity can be overcome with the self-similarity of $X^{(B)}$, see \eqref{eqn:self_similar_besq}, which can be written $d_{\alpha} Q_{\alpha t} = Q_{t} d_\alpha$, where $d_\alpha f(x) = f(\alpha x)$ is the dilation operator. This comes with the tradeoff that the simulation estimate variance is increased, but the variance increase should be polynomial in the dilation factor. It follows that simulation will be of complexity will be constant in time. 
 		
-		\item Alternatively, we propose to overcome the exponentially time complexity described above with simulating the $\besq$ process via the Laguerre process, using the relation \eqref{eqn:besq_lag}, in which case we can similar exponentially large times for the $\besq$ process in linear time. In particular, for $t \geq  0$, $f \in \ell^2(\Z_+)$, $d_{t + 1}F = \Lambda f_t$,
+		\item \label{lag_connection} Alternatively, we propose to overcome the exponentially time complexity described above with simulating the $\besq$ process via the Laguerre process, using the relation \eqref{eqn:besq_lag}, in which case we can similar exponentially large times for the $\besq$ process in linear time. In particular, for $t \geq  0$, $f \in \ell^2(\Z_+)$, $d_{t + 1}F = \Lambda f_t$,
 			\beq \E_x[F(X_t^{(B)})] = \E[f_t(\bb{X}^{L}_{\log (t + 1)}) \mid X_0 \sim \pois(x)] . \eeq
 			
 			Since, the states for the discrete Laguerre on the RHS will be of size $O(tx)$ on average, noting that mean reversion will drive the process towards $1$, the time complexity of simulation will be $O(tx \log t)$ with high probability. 
