@@ -179,7 +179,38 @@
 		
 		The Poisson kernel operator $\Lambda$ extends to $\ell^2(\Z_+) \to L^2(\R_+)$ and its dual $\Lambda^* : L^2(\R_+) \to \ell^2(\Z_+)$ is the Gamma kernel operator 
 		\beq \label{eqn:gamma_kernel} \Lambda^*g(n) = \int_0^\infty g(x) \frac{x^n}{n!} e^{-x} \, dx . \eeq
-		Moreover, $\Lambda \Lambda^* = Q_1$, the $\besq$-transition kernel at time $1$. 
+		Moreover, $\Lambda \Lambda^* = Q_1$, the $\besq$-transition kernel at time $1$ and $\Lambda^* \Lambda = \bb{Q}_1$. 
+		
+		\item The Bessel function $\cl{J}_\nu : \R \to \R$ of order $\nu \geq 0$ is defined 
+		\beq \cl{J}_\nu(x) = \sum_{m = 0}^\infty \frac{(-1)^m}{m! \Gamma(m + \nu + 1)} \left ( \frac{x}{2} \right )^{2m + \nu} . \eeq
+		The Hankel transform $\cl{H}_v : L^2(\R_+) \to L^2(\R_+)$ is defined
+		\beq \cl{H}_\nu f(x) = \int_0^\infty f(y) \cl{J}_nu(xy) \sqrt{xy} \, dy . \eeq
+		The Hankel transform is an involution, i.e. $\cl{H}_\nu^{-1} = \cl{H}_\nu$ and an isometry in the sense
+		\beq \langle f, g \rangle = \langle \cl{H}_\nu f, \cl{H}_\nu g \rangle, \quad \forall f, g \in L^2(\R_+) . \eeq
+		
+		For our purposes, it suffices to consider $\nu = 0$ and we denote $\cl{H} = \cl{H}_0$. In many applications, it is easier to work with the \textit{reparametrized Bessel function} 
+		\beq J_0(x) = \cl{J}_0(2 \sqrt{x}) = \sum_{m = 0}^\infty \frac{(-x)^m}{m! m!} . \eeq
+		
+		We can then define the \textit{reparametrized Hankel transform}
+		\beq Hf(x) = \int_0^\infty f(y) J_0(xy) \,dy . \eeq
+		
+		By a substitution $z = \sqrt{y}$, 
+		\begin{align*}
+			Hf(x) 
+				&= \int_0^\infty f(y) J_0(xy) \,dy \\
+				&= \int_0^\infty f(y) \cl{J}_0(2 \sqrt{xy}) \,dy \\
+				&= \int_0^\infty f(z^2) \cl{J}_0(2 \sqrt{x} z) \, 2z \, dz \\
+				&= \frac{1}{x^{1/4}} \cl{H}F(2\sqrt{x}) 
+		\end{align*}
+		where $F(x) = f(x^2)\sqrt{2x}$ provided $F \in L^2(\R_+)$. However, 
+		\[ \|F\|_2^2 = \int_0^\int f(x^2)^2 (2x) \, dx = \int_0^\infty f(y)^2 \, dy = \|f\|_2^2 \] 
+		and 
+		\[ \|Hf(x)\|_2^2 = \int_0^\infty \cl{H}F(2\sqrt{x})^2 \frac{1}{\sqrt{x}} \, dx = \int_0^\infty \|\cl{H}F\|_2^2 . \]
+		Hence, the reparametrized Hankel transform extends to $H : L^2(\R_+) \to L^2(\R_+)$ and is also an involution and an isometry. Moreover, for any $t > 0$, 
+		\beq \label{eqn:besq_hankel} Q_t f(x) = \int_0^\infty e^{-ty} J_0(xy) Hf(y) \, dy . \eeq
+		
+		
+		
 		
 	\end{enumerate}
 
@@ -213,12 +244,8 @@
 	\beq \E_x[F(X_t^{L})] = \E[f(\bb{X}_t^{(L)}) \mid X_0 \sim \pois(x)] . \eeq
 	
 \subsection{Spectral Simulation of BESQ${}^{(0)}$}
-	${}$ {\color{red} formulas to be verified-} Self-adjointness guarantees a spectral representation of $Q$, which can be expressed 
-		\beq Q_t f(x) = \frk{H}_0 \cl{M}_{e^{-t\cdot}} \frk{H}_0 f(x), \eeq
-		where $\cl{M}_{e^{-t\cdot}}f(x) = e^{-tx} f(x)$ for $f \in L^2(\R_+)$ and $\frk{H}_0$ is the Hankel transform, which is an isometry of $L^2(\R_+)$ and an involution, i.e. $\frk{H}_0^{-1} = \frk{H}_0$. For $f \in L^2(\R_+)$, 
-		\beq \frk{H}_0 f(x) = \int_0^\infty f(q) \cl{J}_0(qx) q \, dq , \eeq
-		where $\cl{J}_0$ is the Bessel function of order $0$. It follows that 
-		\beq Q_tf(x) = \int_0^\infty e^{-qt} \cl{J}_0(qx) \frk{H}_0f(q) \, dq = \frac{1}{t} \E[\cl{J}_0(xZ) \frk{H}_0f(Z)] \eeq
+	By the formula \eqref{eqn:besq_hankel}, 
+		\beq Q_tf(x) = \frac{1}{t} \E[\cl{J}_0(xZ) Hf(Z)] \eeq
 		where $Z \sim \Exp(t)$. 
 	
 
