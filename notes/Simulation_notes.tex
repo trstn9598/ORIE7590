@@ -142,16 +142,16 @@
 		We will denote $Q^{(0)} = Q$ and $B^{(0)} = B$. The $\besq_m$ processes are $1$-self-similar:
 		\beq \label{eqn:self_similar_besq} ( \alpha X_t^{(B, m)} \mid X_0^{(B, m)} = x) \overset{(d)}{=} (X_{\alpha t}^{(B, m)} \mid X_0^{(B, m)} = \alpha x), \quad \forall x \in \R_+, \alpha > 0 . \eeq
 		
-		The measure $\mu_m(dx) = \frac{x^m}{\Gamma(m + 1)} \, dx$ is invariant for $Q^{(m)}$ and $Q^{(m)}$ is self-adjoint in $L^2(\frk{m}_m)$.
+		The measure $\mu_m(dx) = \frac{x^m}{\Gamma(m + 1)} \, dx$ ($\mu = \mu_0$) is invariant for $Q^{(m)}$ and $Q^{(m)}$ is self-adjoint in $L^2(\mu_m)$.
 		
-		\item The \textit{Laguerre} process $X^{L, m}$ of index $m \geq $ is a diffusion process on $\R_+$ that is a solution to the SDE 
+		\item The \textit{Laguerre} process $X^{L, m}$ of index $m \geq 0$ is a diffusion process on $\R_+$ that is a solution to the SDE 
 		\beq dX_t = (1 + m - X_t) dt + \sqrt{2X_t} \, dW_t \eeq
 		where $W$ is a standard Weiner process. 
 		
 		It's transition semigroup, which we denote $K^{(m)}$, has generator $L^{(m)}$ that satisfies
 		\beq L^{(m)}f(x) = x f''(x) + (1 + m - x) f'(x), \quad x \in \R_+, f \in C^2(\R_+). \eeq
 		
-		We will denote $K^{(0)} = K$ and $L^{(0)} = L$. The semigroup $K^{(m)}$ has stationary distribution $\epsilon_m(dx) = \frac{x^m}{\Gamma(m + 1)} e^{-x} \, dx$ ($\epsilon = \epsilon^{(0)}$) and $Q^{(m)}$ is self-adjoint in $L^2(\epsilon_m)$. The Laguerre processes are the stationary analog of the $\besq$ processes and satisfy 
+		We will denote $K^{(0)} = K$ and $L^{(0)} = L$. The semigroup $K^{(m)}$ has stationary distribution $\epsilon_m(dx) = \frac{x^m}{\Gamma(m + 1)} e^{-x} \, dx$ ($\epsilon = \epsilon_0$) and $K^{(m)}$ is self-adjoint in $L^2(\epsilon_m)$. The Laguerre processes are the stationary analog of the $\besq$ processes and satisfy 
 		\beq \label{eqn:besq_lag} K^{(m)}_t = Q_{e^t - 1}^{(m)} d_{e^{-t}} = d_{e^{-t}} Q_{1 - e^{-t}}^{(m)} \quad t \geq 0, \text{on } L^2(\R_+) . \eeq
 		
 	\end{enumerate}
@@ -165,21 +165,34 @@
 		\beq \lambda_n = n + m + 1, \quad \mu_n = n , \quad n \in \Z_+. \eeq
 		
 		Let its transition semigroup and generator be denoted $\bb{Q}^{(m)}$ and $\bb{B}^{(m)}$, respectively. The measure $\frk{m}_m(n) = \frac{\Gamma(n + m + 1)}{n! \Gamma(m + 1)}$ is invariant for $\bb{Q}^{(m)}$ and $\bb{Q}^{(m)}$ is self-adjoint in $\ell^2(\frk{m}_m)$. Let us denote $\frk{m} = \frk{m}_0$. 
+		
+		\item The \textit{discrete Laguerre} process $\bb{X}^{(L, m)}$ of index $m$ is a birth-death process on $\Z_+$ that has rates
+		\beq \lambda_n = n + m + 1, \quad \mu_n = 2 n , \quad n \in \Z_+. \eeq
+		
+		Let its transition semigroup and generator be denoted $\bb{K}^{(m)}$ and $\bb{L}^{(m)}$, respectively. The semigroup $\bb{K}^{(m)}$ has stationary distribution $\frk{n}_m(n) = \frac{\Gamma(n + m + 1)}{n! \Gamma(m + 1)} \frac{1}{2^{n+m+1}}$ and $\bb{K}^{(m)}$ is self-adjoint in $\ell^2(\frk{n}_m)$. Let us denote $\frk{n} = \frk{n}_0$. 
 
 	
 	
 	\end{enumerate}
 
 \subsection{Intertwining Operators}
-
+	Given a measure $\mu^*$ on $\R_+$, we define the Hilbert space
+	\beq L^2 (\mu^*) = \{f: \R_+ \to \R \text{ measurable with } \int_0^{\infty} f^2 (x) \mu^* (dx) < \infty \}. \eeq
+	Similarly, given a measure $\frk{m}^*$ on $\Z_+$, we define the Hilbert space
+	\beq \ell^2 (\frk{m}^*) = \{f: \Z_+ \to \R \text{ measurable with } \sum_{n=0}^{\infty} f^2 (n) \frk{m}^* (n) < \infty \}. \eeq
+	
 	\begin{enumerate}
 		
 		\item Let $\Lambda : C_0(\Z_+) \to C_0(\R_+)$ be the Poisson kernel operator 
 		\beq \label{eqn:poisson_kernel} \Lambda f(x) = \sum_{n \in \Z_+} f(n) \frac{x^n}{n!} e^{-x} , \quad x \in \R_+. \eeq
 		
-		The Poisson kernel operator $\Lambda$ extends to $\ell^2(\Z_+) \to L^2(\R_+)$ and its dual $\Lambda^* : L^2(\R_+) \to \ell^2(\Z_+)$ is the Gamma kernel operator 
+		The Poisson kernel operator $\Lambda$ extends to $\ell^2(\frk{m}) \to L^2(\mu)$ and its dual $\Lambda^* : L^2(\mu) \to \ell^2(\frk{m})$ is the Gamma kernel operator 
 		\beq \label{eqn:gamma_kernel} \Lambda^*g(n) = \int_0^\infty g(x) \frac{x^n}{n!} e^{-x} \, dx . \eeq
 		Moreover, $\Lambda \Lambda^* = Q_1$, the $\besq$-transition kernel at time $1$ and $\Lambda^* \Lambda = \bb{Q}_1$. 
+		
+		\item The Poisson kernel operator $\Lambda$ also extends to $\ell^2(\frk{n}) \to L^2(\epsilon)$ and its dual $\widehat{\Lambda} : L^2(\epsilon) \to \ell^2(\frk{n})$ is given by
+		\beq \widehat{\Lambda} g(n) = \int_0^\infty g(\frac{x}{2}) \frac{x^n}{n!} e^{-x} \, dx = \Lambda^* d_{\frac{1}{2}} g (x). \eeq
+		Moreover, $\Lambda \widehat{\Lambda} = K_{\ln 2}$ and $\widehat{\Lambda} \Lambda = \bb{K}_{\ln 2}$. 
 		
 		\item The Bessel function $\cl{J}_\nu : \R \to \R$ of order $\nu \geq 0$ is defined 
 		\beq \cl{J}_\nu(x) = \sum_{m = 0}^\infty \frac{(-1)^m}{m! \Gamma(m + \nu + 1)} \left ( \frac{x}{2} \right )^{2m + \nu} . \eeq
@@ -230,18 +243,32 @@
 			\beq \E_x[F(X_t^B)] = \E[f_t(\bb{X}^B_{t_0}) \mid \bb{X}^B_0 \sim \pois(xt_0/t)] . \eeq
 			
 		\item (Laguerre Connection, see \ref{lag_connection}) By the $\besq$-Laguerre connection \eqref{eqn:besq_lag}, for $t \geq  0$, $f \in \ell^2(\Z_+)$, $d_{t + 1}F = \Lambda f_t$,
-			\beq \E_x[F(X_t^{B})] = \E[f_t(\bb{X}^{L}_{\log (t + 1)}) \mid X_0 \sim \pois(x)] . \eeq
+			\beq \E_x[F(X_t^{B})] = \E[f_t(\bb{X}^{L}_{\log (t + 1)}) \mid \bb{X}^B_0 \sim \pois(x)] . \eeq
 			
-		\item (Interweaving with delay) By duality and self-adjointness, for $t \geq 0$,  $Q_{1 + t} = \Lambda \bb{Q}_t \Lambda^*$. In particular, for $f \in L^2(\R_+$), 
-			\beq \E_x[F(X_{1 + t}^{B})] = \E[F(\Gam(\bb{X}_t^{B})) \mid X_0 \sim \pois(x)] . \eeq
+		\item (Interweaving with delay) By duality and self-adjointness, for $t \geq 0$,  $Q_{t + 1} = \Lambda \bb{Q}_t \Lambda^*$. In particular, for $f \in L^2(\R_+$), 
+			\beq \E_x[F(X_{t + 1}^{B})] = \E[F(\Gam(\bb{X}_t^{B})) \mid \bb{X}^B_0 \sim \pois(x)] . \eeq
+			Similarly, for $t \geq 0$, $K_{t + \ln 2} = \Lambda \bb{K}_t \widehat{\Lambda}$. Fix $t \geq 0$ and let $s = \ln (\frac{t}{2} + 1)$. We have
+			\begin{align}
+			 \E_x[F(X_{t + 1}^{B})] &= K_{s + \ln 2} d_{t+2} F (x) = \Lambda \bb{K}_s \Lambda^* d_{\frac{t}{2} + 1} F(x) \\
+			 &= \E[d_{\frac{t}{2} + 1} F(\Gam(\bb{X}_s^{L})) \mid \bb{X}^L_0 \sim \pois(x)].
+			\end{align}
 	
 	\end{enumerate}
 	
 \subsection{Base Laguerre case} 
 	The Poisson kernel operator $\Lambda$ extends to $\ell^2(\frk{m}) \to L^2(\epsilon)$ and for $t \geq 0$, 
-	\beq L_t\Lambda = \Lambda \bb{K}_t \quad \text{on } \ell^2(\frk{m}). \eeq
+	\beq K_t\Lambda = \Lambda \bb{K}_t \quad \text{on } \ell^2(\frk{m}). \eeq
 	That is, if $f \in \ell^2(\frk{m})$ and $F = \Lambda f$, then for a.e. $x \in \R_+$
 	\beq \E_x[F(X_t^{L})] = \E[f(\bb{X}_t^{(L)}) \mid X_0 \sim \pois(x)] . \eeq
+
+\subsubsection{Modifications:}
+	\begin{enumerate}
+	\item (Interweaving with delay) For $t \geq 0$, using $K_{t + \ln 2} = \Lambda \bb{K}_t \widehat{\Lambda}$, we have
+			\begin{align}
+			 \E_x[F(X_{t + \ln 2}^{L})] &= \E[d_{\frac{1}{2}} F(\Gam(\bb{X}_t^{L})) \mid \bb{X}^L_0 \sim \pois(x)].
+			\end{align}
+	
+	\end{enumerate}
 	
 \subsection{Spectral Simulation of BESQ${}^{(0)}$}
 	By the formula \eqref{eqn:besq_hankel}, 
