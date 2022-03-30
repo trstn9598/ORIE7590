@@ -87,6 +87,37 @@ def MC_Laguerre_gateway(N = 10**6, t = 0, x0 = 0, test = 'laguerre', method = 'l
     xt_array = bd_simulator(s, x0=poisson_x0, num_paths=N, method='laguerre', num_threads=4)
     return np.mean(f(xt_array)).round(num_decimal)
 
+def MC_dBESQ_gateway(N = 10**6, t = 0, n0 = 0, test = 'laguerre', method = 'laguerre', args = [], num_decimal = 4):
+    """
+    Monte Carlo estimator of expected dBESQ using birth-death simulation, exact BESQ solution, dLaguerre simulation 
+    or PDE systems.
+    :param N: int, Number of simulations
+    :param T: positive float, Simulation horizon
+    :param x0: initial value of X
+    :param method: simulation method, currently support {'birth-death', 'exact-besq', 'laguerre', 'pde'}
+    :param test: defines test function
+    :args: arguments to define test function
+    """
+    if method == 'birth-death':
+        if test == 'laguerre':
+            f = lambda n : eval_laguerre(n, 1)
+            xt_array = bd_simulator(t, x0=n0, num_paths=N, method='bessel', num_threads=4)
+            return np.mean(f(xt_array)).round(num_decimal)
+        
+    elif method == 'exact-besq':
+        if test == 'laguerre':
+            return np.mean(exp(-t+1)*jv(0, 2*np.sqrt(np.random.gamma(n0+1)))).round(num_decimal)
+        
+    elif method == 'laguerre':
+        if test == 'laguerre':
+            f = lambda n : eval_laguerre(n, 1)
+            s = log(t / 2)
+    
+            def poisson_x0():
+                return np.random.poisson(np.random.gamma(n0+1))
+            xt_array = bd_simulator(s, x0=poisson_x0, num_paths=N, method='laguerre', num_threads=4)
+            return np.mean(f(np.random.poisson(t/2 *np.random.gamma(xt_array+1)))).round(num_decimal)
+
 def MC_BESQ_hankel(N = 10**6, t = 0, x0 = 0, test = 'custom', function = lambda x : 0, args = [], num_decimal = 4):
     """
     Monte Carlo estimator of expected BESQ using Hankel transform and Exponential r.v.
