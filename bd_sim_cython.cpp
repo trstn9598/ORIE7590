@@ -1360,6 +1360,13 @@ static CYTHON_INLINE int __pyx_sub_acquisition_count_locked(
 static CYTHON_INLINE void __Pyx_INC_MEMVIEW(__Pyx_memviewslice *, int, int);
 static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *, int, int);
 
+/* DivInt[long].proto */
+static CYTHON_INLINE long __Pyx_div_long(long, long);
+
+/* UnaryNegOverflows.proto */
+#define UNARY_NEG_WOULD_OVERFLOW(x)\
+        (((x) < 0) & ((unsigned long)(x) == 0-(unsigned long)(x)))
+
 /* ArgTypeTest.proto */
 #define __Pyx_ArgTypeTest(obj, type, none_allowed, name, exact)\
     ((likely((Py_TYPE(obj) == type) | (none_allowed && (obj == Py_None)))) ? 1 :\
@@ -1447,10 +1454,6 @@ static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int 
 
 /* DivInt[Py_ssize_t].proto */
 static CYTHON_INLINE Py_ssize_t __Pyx_div_Py_ssize_t(Py_ssize_t, Py_ssize_t);
-
-/* UnaryNegOverflows.proto */
-#define UNARY_NEG_WOULD_OVERFLOW(x)\
-        (((x) < 0) & ((unsigned long)(x) == 0-(unsigned long)(x)))
 
 static CYTHON_UNUSED int __pyx_array_getbuffer(PyObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /*proto*/
 static PyObject *__pyx_array_get_memview(struct __pyx_array_obj *); /*proto*/
@@ -1680,9 +1683,6 @@ static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
 #define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
 #endif
 
-/* DivInt[long].proto */
-static CYTHON_INLINE long __Pyx_div_long(long, long);
-
 /* ImportFrom.proto */
 static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
 
@@ -1872,6 +1872,8 @@ static long __pyx_f_13bd_sim_cython_discrete_bessel_one_path(double, long, int _
 static long __pyx_f_13bd_sim_cython_discrete_laguerre_one_path(double, long, int __pyx_skip_dispatch); /*proto*/
 static void __pyx_f_13bd_sim_cython_discrete_bessel_sim(double, __Pyx_memviewslice, long, __Pyx_memviewslice, int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_discrete_bessel_sim *__pyx_optional_args); /*proto*/
 static void __pyx_f_13bd_sim_cython_discrete_laguerre_sim(double, __Pyx_memviewslice, long, __Pyx_memviewslice, int __pyx_skip_dispatch, struct __pyx_opt_args_13bd_sim_cython_discrete_laguerre_sim *__pyx_optional_args); /*proto*/
+static long __pyx_f_13bd_sim_cython_meixner(long, long, int __pyx_skip_dispatch); /*proto*/
+static void __pyx_f_13bd_sim_cython_cmeixner(long, __Pyx_memviewslice, long, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -1921,6 +1923,8 @@ static PyObject *__pyx_builtin_id;
 static PyObject *__pyx_builtin_IndexError;
 static const char __pyx_k_O[] = "O";
 static const char __pyx_k_c[] = "c";
+static const char __pyx_k_m[] = "m";
+static const char __pyx_k_n[] = "n";
 static const char __pyx_k_t[] = "t";
 static const char __pyx_k_id[] = "id";
 static const char __pyx_k_np[] = "np";
@@ -2058,9 +2062,11 @@ static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_itemsize;
 static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
+static PyObject *__pyx_n_s_m;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_memview;
 static PyObject *__pyx_n_s_mode;
+static PyObject *__pyx_n_s_n;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_name_2;
 static PyObject *__pyx_n_s_ndim;
@@ -2111,6 +2117,8 @@ static PyObject *__pyx_pf_13bd_sim_cython_discrete_bessel_one_path(CYTHON_UNUSED
 static PyObject *__pyx_pf_13bd_sim_cython_2discrete_laguerre_one_path(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, long __pyx_v_x0); /* proto */
 static PyObject *__pyx_pf_13bd_sim_cython_4discrete_bessel_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads); /* proto */
 static PyObject *__pyx_pf_13bd_sim_cython_6discrete_laguerre_sim(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_t, __Pyx_memviewslice __pyx_v_x0, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, int __pyx_v_num_threads); /* proto */
+static PyObject *__pyx_pf_13bd_sim_cython_8meixner(CYTHON_UNUSED PyObject *__pyx_self, long __pyx_v_n, long __pyx_v_m); /* proto */
+static PyObject *__pyx_pf_13bd_sim_cython_10cmeixner(CYTHON_UNUSED PyObject *__pyx_self, long __pyx_v_n, __Pyx_memviewslice __pyx_v_m, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -3572,6 +3580,8 @@ static void __pyx_f_13bd_sim_cython_discrete_laguerre_sim(double __pyx_v_t, __Py
  *             output[iPath] = discrete_laguerre_one_path(t, x0[iPath])
  * 
  *     return             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
   goto __pyx_L0;
 
@@ -3722,6 +3732,655 @@ static PyObject *__pyx_pf_13bd_sim_cython_6discrete_laguerre_sim(CYTHON_UNUSED P
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_x0, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_output, 1);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "bd_sim_cython.pyx":92
+ * 
+ * 
+ * cpdef long meixner(long n, long m) nogil:             # <<<<<<<<<<<<<<
+ *     """
+ *     Mexiner polynomial Mn(m) = \sum_{k=0}^m (-1)^k {m \choose k} {n \choose k}
+ */
+
+static PyObject *__pyx_pw_13bd_sim_cython_9meixner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static long __pyx_f_13bd_sim_cython_meixner(long __pyx_v_n, long __pyx_v_m, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  long __pyx_v_summ;
+  long __pyx_v_summand;
+  long __pyx_v_k;
+  long __pyx_v_n1;
+  long __pyx_v_m1;
+  long __pyx_r;
+  long __pyx_t_1;
+  long __pyx_t_2;
+  long __pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+
+  /* "bd_sim_cython.pyx":99
+ *     """
+ *     cdef:
+ *         long summ = 1, summand = 1, k = 1             # <<<<<<<<<<<<<<
+ *         long n1, m1
+ *     n1 = n + 1
+ */
+  __pyx_v_summ = 1;
+  __pyx_v_summand = 1;
+  __pyx_v_k = 1;
+
+  /* "bd_sim_cython.pyx":101
+ *         long summ = 1, summand = 1, k = 1
+ *         long n1, m1
+ *     n1 = n + 1             # <<<<<<<<<<<<<<
+ *     m1 = m + 1
+ * 
+ */
+  __pyx_v_n1 = (__pyx_v_n + 1);
+
+  /* "bd_sim_cython.pyx":102
+ *         long n1, m1
+ *     n1 = n + 1
+ *     m1 = m + 1             # <<<<<<<<<<<<<<
+ * 
+ *     while k <= min(m,n):
+ */
+  __pyx_v_m1 = (__pyx_v_m + 1);
+
+  /* "bd_sim_cython.pyx":104
+ *     m1 = m + 1
+ * 
+ *     while k <= min(m,n):             # <<<<<<<<<<<<<<
+ *         summand *= - (m1 - k) * (n1 - k)
+ *         summand //= k * k
+ */
+  while (1) {
+    __pyx_t_1 = __pyx_v_n;
+    __pyx_t_2 = __pyx_v_m;
+    if (((__pyx_t_1 < __pyx_t_2) != 0)) {
+      __pyx_t_3 = __pyx_t_1;
+    } else {
+      __pyx_t_3 = __pyx_t_2;
+    }
+    __pyx_t_4 = ((__pyx_v_k <= __pyx_t_3) != 0);
+    if (!__pyx_t_4) break;
+
+    /* "bd_sim_cython.pyx":105
+ * 
+ *     while k <= min(m,n):
+ *         summand *= - (m1 - k) * (n1 - k)             # <<<<<<<<<<<<<<
+ *         summand //= k * k
+ *         summ += summand
+ */
+    __pyx_v_summand = (__pyx_v_summand * ((-(__pyx_v_m1 - __pyx_v_k)) * (__pyx_v_n1 - __pyx_v_k)));
+
+    /* "bd_sim_cython.pyx":106
+ *     while k <= min(m,n):
+ *         summand *= - (m1 - k) * (n1 - k)
+ *         summand //= k * k             # <<<<<<<<<<<<<<
+ *         summ += summand
+ *         k += 1
+ */
+    __pyx_t_3 = (__pyx_v_k * __pyx_v_k);
+    if (unlikely(__pyx_t_3 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 106, __pyx_L1_error)
+    }
+    else if (sizeof(long) == sizeof(long) && (!(((long)-1) > 0)) && unlikely(__pyx_t_3 == (long)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_v_summand))) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 106, __pyx_L1_error)
+    }
+    __pyx_v_summand = __Pyx_div_long(__pyx_v_summand, __pyx_t_3);
+
+    /* "bd_sim_cython.pyx":107
+ *         summand *= - (m1 - k) * (n1 - k)
+ *         summand //= k * k
+ *         summ += summand             # <<<<<<<<<<<<<<
+ *         k += 1
+ * 
+ */
+    __pyx_v_summ = (__pyx_v_summ + __pyx_v_summand);
+
+    /* "bd_sim_cython.pyx":108
+ *         summand //= k * k
+ *         summ += summand
+ *         k += 1             # <<<<<<<<<<<<<<
+ * 
+ *     return summ
+ */
+    __pyx_v_k = (__pyx_v_k + 1);
+  }
+
+  /* "bd_sim_cython.pyx":110
+ *         k += 1
+ * 
+ *     return summ             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_summ;
+  goto __pyx_L0;
+
+  /* "bd_sim_cython.pyx":92
+ * 
+ * 
+ * cpdef long meixner(long n, long m) nogil:             # <<<<<<<<<<<<<<
+ *     """
+ *     Mexiner polynomial Mn(m) = \sum_{k=0}^m (-1)^k {m \choose k} {n \choose k}
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("bd_sim_cython.meixner", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __pyx_r = 0;
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_13bd_sim_cython_9meixner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_13bd_sim_cython_8meixner[] = "\n    Mexiner polynomial Mn(m) = \\sum_{k=0}^m (-1)^k {m \\choose k} {n \\choose k}\n    :param n: int\n    :param m: int\n    ";
+static PyObject *__pyx_pw_13bd_sim_cython_9meixner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  long __pyx_v_n;
+  long __pyx_v_m;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("meixner (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_n,&__pyx_n_s_m,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_m)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("meixner", 1, 2, 2, 1); __PYX_ERR(0, 92, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "meixner") < 0)) __PYX_ERR(0, 92, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+    }
+    __pyx_v_n = __Pyx_PyInt_As_long(values[0]); if (unlikely((__pyx_v_n == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L3_error)
+    __pyx_v_m = __Pyx_PyInt_As_long(values[1]); if (unlikely((__pyx_v_m == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("meixner", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 92, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("bd_sim_cython.meixner", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_13bd_sim_cython_8meixner(__pyx_self, __pyx_v_n, __pyx_v_m);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_13bd_sim_cython_8meixner(CYTHON_UNUSED PyObject *__pyx_self, long __pyx_v_n, long __pyx_v_m) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("meixner", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_13bd_sim_cython_meixner(__pyx_v_n, __pyx_v_m, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("bd_sim_cython.meixner", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "bd_sim_cython.pyx":113
+ * 
+ * 
+ * cpdef void cmeixner(long n, long[:] m, long num_path, long[:] output):             # <<<<<<<<<<<<<<
+ *     """
+ *     Evalutaiton of Mexiner polynomial Mn at ms = (m1, ..., ml)
+ */
+
+static PyObject *__pyx_pw_13bd_sim_cython_11cmeixner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static void __pyx_f_13bd_sim_cython_cmeixner(long __pyx_v_n, __Pyx_memviewslice __pyx_v_m, CYTHON_UNUSED long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  Py_ssize_t __pyx_v_iPath;
+  __Pyx_RefNannyDeclarations
+  long __pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  int __pyx_t_5;
+  Py_ssize_t __pyx_t_6;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("cmeixner", 0);
+
+  /* "bd_sim_cython.pyx":122
+ *         Py_ssize_t iPath
+ * 
+ *     with nogil, parallel(num_threads=4):             # <<<<<<<<<<<<<<
+ *         for iPath in prange(num_path, schedule='dynamic'):
+ *             output[iPath] = meixner(n, m[iPath])
+ */
+  {
+      #ifdef WITH_THREAD
+      PyThreadState *_save;
+      Py_UNBLOCK_THREADS
+      __Pyx_FastGIL_Remember();
+      #endif
+      /*try:*/ {
+        {
+            const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
+            PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
+            int __pyx_parallel_why;
+            __pyx_parallel_why = 0;
+            #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+                #undef likely
+                #undef unlikely
+                #define likely(x)   (x)
+                #define unlikely(x) (x)
+            #endif
+            #ifdef _OPENMP
+            #pragma omp parallel  private(__pyx_t_1, __pyx_t_2, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb) num_threads(4)
+            #endif /* _OPENMP */
+            {
+                #ifdef _OPENMP
+                #ifdef WITH_THREAD
+                PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                #endif
+                Py_BEGIN_ALLOW_THREADS
+                #endif /* _OPENMP */
+
+                /* "bd_sim_cython.pyx":123
+ * 
+ *     with nogil, parallel(num_threads=4):
+ *         for iPath in prange(num_path, schedule='dynamic'):             # <<<<<<<<<<<<<<
+ *             output[iPath] = meixner(n, m[iPath])
+ * 
+ */
+                __pyx_t_1 = __pyx_v_num_path;
+                if ((1 == 0)) abort();
+                {
+                    Py_ssize_t __pyx_parallel_temp0 = ((Py_ssize_t)0xbad0bad0);
+                    const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
+                    PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
+                    int __pyx_parallel_why;
+                    __pyx_parallel_why = 0;
+                    __pyx_t_3 = (__pyx_t_1 - 0 + 1 - 1/abs(1)) / 1;
+                    if (__pyx_t_3 > 0)
+                    {
+                        #ifdef _OPENMP
+                        #pragma omp for firstprivate(__pyx_v_iPath) lastprivate(__pyx_v_iPath) schedule(dynamic)
+                        #endif /* _OPENMP */
+                        for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_3; __pyx_t_2++){
+                            if (__pyx_parallel_why < 2)
+                            {
+                                __pyx_v_iPath = (Py_ssize_t)(0 + 1 * __pyx_t_2);
+
+                                /* "bd_sim_cython.pyx":124
+ *     with nogil, parallel(num_threads=4):
+ *         for iPath in prange(num_path, schedule='dynamic'):
+ *             output[iPath] = meixner(n, m[iPath])             # <<<<<<<<<<<<<<
+ * 
+ *     return
+ */
+                                __pyx_t_4 = __pyx_v_iPath;
+                                __pyx_t_5 = -1;
+                                if (__pyx_t_4 < 0) {
+                                  __pyx_t_4 += __pyx_v_m.shape[0];
+                                  if (unlikely(__pyx_t_4 < 0)) __pyx_t_5 = 0;
+                                } else if (unlikely(__pyx_t_4 >= __pyx_v_m.shape[0])) __pyx_t_5 = 0;
+                                if (unlikely(__pyx_t_5 != -1)) {
+                                  __Pyx_RaiseBufferIndexErrorNogil(__pyx_t_5);
+                                  __PYX_ERR(0, 124, __pyx_L12_error)
+                                }
+                                __pyx_t_6 = __pyx_v_iPath;
+                                __pyx_t_5 = -1;
+                                if (__pyx_t_6 < 0) {
+                                  __pyx_t_6 += __pyx_v_output.shape[0];
+                                  if (unlikely(__pyx_t_6 < 0)) __pyx_t_5 = 0;
+                                } else if (unlikely(__pyx_t_6 >= __pyx_v_output.shape[0])) __pyx_t_5 = 0;
+                                if (unlikely(__pyx_t_5 != -1)) {
+                                  __Pyx_RaiseBufferIndexErrorNogil(__pyx_t_5);
+                                  __PYX_ERR(0, 124, __pyx_L12_error)
+                                }
+                                *((long *) ( /* dim=0 */ (__pyx_v_output.data + __pyx_t_6 * __pyx_v_output.strides[0]) )) = __pyx_f_13bd_sim_cython_meixner(__pyx_v_n, (*((long *) ( /* dim=0 */ (__pyx_v_m.data + __pyx_t_4 * __pyx_v_m.strides[0]) ))), 0);
+                                goto __pyx_L15;
+                                __pyx_L12_error:;
+                                {
+                                    #ifdef WITH_THREAD
+                                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                                    #endif
+                                    #ifdef _OPENMP
+                                    #pragma omp flush(__pyx_parallel_exc_type)
+                                    #endif /* _OPENMP */
+                                    if (!__pyx_parallel_exc_type) {
+                                      __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                                      __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                                      __Pyx_GOTREF(__pyx_parallel_exc_type);
+                                    }
+                                    #ifdef WITH_THREAD
+                                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                                    #endif
+                                }
+                                __pyx_parallel_why = 4;
+                                goto __pyx_L14;
+                                __pyx_L14:;
+                                #ifdef _OPENMP
+                                #pragma omp critical(__pyx_parallel_lastprivates2)
+                                #endif /* _OPENMP */
+                                {
+                                    __pyx_parallel_temp0 = __pyx_v_iPath;
+                                }
+                                __pyx_L15:;
+                                #ifdef _OPENMP
+                                #pragma omp flush(__pyx_parallel_why)
+                                #endif /* _OPENMP */
+                            }
+                        }
+                    }
+                    if (__pyx_parallel_exc_type) {
+                      /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
+                      __pyx_parallel_why = 4;
+                    }
+                    if (__pyx_parallel_why) {
+                      __pyx_v_iPath = __pyx_parallel_temp0;
+                      switch (__pyx_parallel_why) {
+                            case 4:
+                        {
+                            #ifdef WITH_THREAD
+                            PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                            #endif
+                            __Pyx_GIVEREF(__pyx_parallel_exc_type);
+                            __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
+                            __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
+                            #ifdef WITH_THREAD
+                            __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                            #endif
+                        }
+                        goto __pyx_L8_error;
+                      }
+                    }
+                }
+                goto __pyx_L17;
+                __pyx_L8_error:;
+                {
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    #ifdef _OPENMP
+                    #pragma omp flush(__pyx_parallel_exc_type)
+                    #endif /* _OPENMP */
+                    if (!__pyx_parallel_exc_type) {
+                      __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                      __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                      __Pyx_GOTREF(__pyx_parallel_exc_type);
+                    }
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                }
+                __pyx_parallel_why = 4;
+                goto __pyx_L17;
+                __pyx_L17:;
+                #ifdef _OPENMP
+                Py_END_ALLOW_THREADS
+                #else
+{
+#ifdef WITH_THREAD
+                PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                #endif
+                #endif /* _OPENMP */
+                /* Clean up any temporaries */
+                #ifdef WITH_THREAD
+                __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                #endif
+                #ifndef _OPENMP
+}
+#endif /* _OPENMP */
+            }
+            if (__pyx_parallel_exc_type) {
+              /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
+              __pyx_parallel_why = 4;
+            }
+            if (__pyx_parallel_why) {
+              switch (__pyx_parallel_why) {
+                    case 4:
+                {
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    __Pyx_GIVEREF(__pyx_parallel_exc_type);
+                    __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
+                    __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                }
+                goto __pyx_L4_error;
+              }
+            }
+        }
+        #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+            #undef likely
+            #undef unlikely
+            #define likely(x)   __builtin_expect(!!(x), 1)
+            #define unlikely(x) __builtin_expect(!!(x), 0)
+        #endif
+      }
+
+      /* "bd_sim_cython.pyx":122
+ *         Py_ssize_t iPath
+ * 
+ *     with nogil, parallel(num_threads=4):             # <<<<<<<<<<<<<<
+ *         for iPath in prange(num_path, schedule='dynamic'):
+ *             output[iPath] = meixner(n, m[iPath])
+ */
+      /*finally:*/ {
+        /*normal exit:*/{
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L5;
+        }
+        __pyx_L4_error: {
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L1_error;
+        }
+        __pyx_L5:;
+      }
+  }
+
+  /* "bd_sim_cython.pyx":126
+ *             output[iPath] = meixner(n, m[iPath])
+ * 
+ *     return             # <<<<<<<<<<<<<<
+ * 
+ */
+  goto __pyx_L0;
+
+  /* "bd_sim_cython.pyx":113
+ * 
+ * 
+ * cpdef void cmeixner(long n, long[:] m, long num_path, long[:] output):             # <<<<<<<<<<<<<<
+ *     """
+ *     Evalutaiton of Mexiner polynomial Mn at ms = (m1, ..., ml)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("bd_sim_cython.cmeixner", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_13bd_sim_cython_11cmeixner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_13bd_sim_cython_10cmeixner[] = "\n    Evalutaiton of Mexiner polynomial Mn at ms = (m1, ..., ml)\n    :param n: int\n    :param m: array\n    ";
+static PyObject *__pyx_pw_13bd_sim_cython_11cmeixner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  long __pyx_v_n;
+  __Pyx_memviewslice __pyx_v_m = { 0, 0, { 0 }, { 0 }, { 0 } };
+  long __pyx_v_num_path;
+  __Pyx_memviewslice __pyx_v_output = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("cmeixner (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_n,&__pyx_n_s_m,&__pyx_n_s_num_path,&__pyx_n_s_output,0};
+    PyObject* values[4] = {0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_m)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("cmeixner", 1, 4, 4, 1); __PYX_ERR(0, 113, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_path)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("cmeixner", 1, 4, 4, 2); __PYX_ERR(0, 113, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("cmeixner", 1, 4, 4, 3); __PYX_ERR(0, 113, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "cmeixner") < 0)) __PYX_ERR(0, 113, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+    }
+    __pyx_v_n = __Pyx_PyInt_As_long(values[0]); if (unlikely((__pyx_v_n == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L3_error)
+    __pyx_v_m = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_m.memview)) __PYX_ERR(0, 113, __pyx_L3_error)
+    __pyx_v_num_path = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_num_path == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L3_error)
+    __pyx_v_output = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_output.memview)) __PYX_ERR(0, 113, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("cmeixner", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 113, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("bd_sim_cython.cmeixner", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_13bd_sim_cython_10cmeixner(__pyx_self, __pyx_v_n, __pyx_v_m, __pyx_v_num_path, __pyx_v_output);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_13bd_sim_cython_10cmeixner(CYTHON_UNUSED PyObject *__pyx_self, long __pyx_v_n, __Pyx_memviewslice __pyx_v_m, long __pyx_v_num_path, __Pyx_memviewslice __pyx_v_output) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("cmeixner", 0);
+  __Pyx_XDECREF(__pyx_r);
+  if (unlikely(!__pyx_v_m.memview)) { __Pyx_RaiseUnboundLocalError("m"); __PYX_ERR(0, 113, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_output.memview)) { __Pyx_RaiseUnboundLocalError("output"); __PYX_ERR(0, 113, __pyx_L1_error) }
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_13bd_sim_cython_cmeixner(__pyx_v_n, __pyx_v_m, __pyx_v_num_path, __pyx_v_output, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("bd_sim_cython.cmeixner", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_m, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_output, 1);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -17478,6 +18137,8 @@ static PyMethodDef __pyx_methods[] = {
   {"discrete_laguerre_one_path", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_3discrete_laguerre_one_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_13bd_sim_cython_2discrete_laguerre_one_path},
   {"discrete_bessel_sim", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_5discrete_bessel_sim, METH_VARARGS|METH_KEYWORDS, 0},
   {"discrete_laguerre_sim", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_7discrete_laguerre_sim, METH_VARARGS|METH_KEYWORDS, 0},
+  {"meixner", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_9meixner, METH_VARARGS|METH_KEYWORDS, __pyx_doc_13bd_sim_cython_8meixner},
+  {"cmeixner", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13bd_sim_cython_11cmeixner, METH_VARARGS|METH_KEYWORDS, __pyx_doc_13bd_sim_cython_10cmeixner},
   {0, 0, 0, 0}
 };
 
@@ -17569,9 +18230,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_itemsize, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
   {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
+  {&__pyx_n_s_m, __pyx_k_m, sizeof(__pyx_k_m), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
   {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
+  {&__pyx_n_s_n, __pyx_k_n, sizeof(__pyx_k_n), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
   {&__pyx_n_s_ndim, __pyx_k_ndim, sizeof(__pyx_k_ndim), 0, 0, 1, 1},
@@ -18832,6 +19495,14 @@ static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *memslice,
     } else {
         memslice->memview = NULL;
     }
+}
+
+/* DivInt[long] */
+static CYTHON_INLINE long __Pyx_div_long(long a, long b) {
+    long q = a / b;
+    long r = a - q*b;
+    q -= ((r != 0) & ((r ^ b) < 0));
+    return q;
 }
 
 /* ArgTypeTest */
@@ -20197,14 +20868,6 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED
     return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
 }
 #endif
-
-/* DivInt[long] */
-static CYTHON_INLINE long __Pyx_div_long(long a, long b) {
-    long q = a / b;
-    long r = a - q*b;
-    q -= ((r != 0) & ((r ^ b) < 0));
-    return q;
-}
 
 /* ImportFrom */
 static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {

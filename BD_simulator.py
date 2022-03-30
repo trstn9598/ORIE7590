@@ -1,6 +1,6 @@
 # ORIE 7590
 import numpy as np
-from bd_sim_cython import discrete_bessel_sim, discrete_laguerre_sim
+from bd_sim_cython import discrete_bessel_sim, discrete_laguerre_sim, cmeixner
 from scipy.special import jv, laguerre, poch, eval_laguerre, j0
 from scipy.integrate import quad
 from math import comb, factorial, exp, sqrt, log
@@ -125,6 +125,11 @@ def exact_BESQ(t = 0, x0 = 0, num_decimal = 4):
 def exact_Laguerre(t = 0, x0 = 0, n = 0, num_decimal = 4):
     return (exp(-t*n)*eval_laguerre(n, x0)).round(num_decimal)
 
+def eval_meixner(n, m):
+    output = np.zeros(dtype=np.int64, shape=len(m))
+    cmeixner(n, m, len(m), output)
+    return output
+
 def hankel_reparam(z, f):
     """
     Monte Carlo estimator of expected BESQ using Hankel transform and Exponential r.v.
@@ -183,24 +188,3 @@ def hankel_reparam(z, f):
 #         result[i] = bd_one_path(t, x0[i])
 #
 #     return result
-
-def meixner(n, m):
-    """
-    Mexiner polynomial Mn(m) = \sum_{k=0}^m (-1)^k {m \choose k} {n \choose k}
-    :param n: int
-    :param m: int
-    """
-    summ, summand = 1, 1
-    n1, m1 = n+1, m+1
-    for k in range(1, min(m,n)+1):
-        summand *= - (m1/k - 1) * (n1/k - 1)
-        summ += summand
-    return summ
-
-def eval_meixner(n, m):
-    """
-    Evalutaiton of Mexiner polynomial Mn at ms = (m1, ..., ml)
-    :param n: int
-    :param m: array
-    """
-    return np.asarray([meixner(n, mi) for mi in m])
