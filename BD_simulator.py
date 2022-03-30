@@ -1,7 +1,7 @@
 # ORIE 7590
 import numpy as np
 from bd_sim_cython import discrete_bessel_sim, discrete_laguerre_sim
-from scipy.special import jv, laguerre, poch
+from scipy.special import jv, laguerre, poch, eval_laguerre, j0
 from scipy.integrate import quad
 from math import comb, factorial, exp, sqrt, log
 import hankel
@@ -29,57 +29,63 @@ def bd_simulator(t, x0, num_paths, method='bessel', num_threads=4):
 
     return output
 
-def MC_BESQ_gateway(N = 10**6, t = 0, x0 = 0, test = 'bessel', args = [], num_decimal = 4):
+def MC_BESQ_gateway(N = 10**6, t = 0, x0 = 0, test = 'bessel', method = 'bessel', args = [], num_decimal = 4):
     """
-    Monte Carlo estimator of expected BESQ using dBESQ simulation
+    Monte Carlo estimator of expected BESQ using dBESQ simulation or dLaguerre simulation
     :param N: int, Number of simulations
     :param T: positive float, Simulation horizon
     :param x0: initial value of X
+    :param method: simulation method, currently support {'bessel', 'laguerre', 'bessel-delay', 'laguerre-delay'}
     :param test: defines test function
     :args: arguments to define test function
     """
-    if test == 'bessel':
-        f = lambda n : laguerre(n)(1)
-    elif test == 'poly':
-        if len(args) < 1:
-            print('No coefficients provided')
-            coef = []
-        else: 
-            coef = args[0]
-        f = lambda n : discrete_poly(n, coef)
-    else:
-        f = lambda n : 0
-
+    if method == 'bessel':
+        if test == 'bessel':
+            f = lambda n : eval_laguerre(n, 1)
+            s = t
+    elif method == 'laguerre':
+        if test == 'bessel':
+            f = lambda n : eval_laguerre(n, 1+t)
+            s = log(t + 1)
+    elif method == 'bessel-delay':
+        method = 'bessel'
+        if test == 'bessel':
+            f = lambda n : j0(2*np.sqrt(np.random.gamma(n+1)))
+            s = t - 1
+    elif method == 'laguerre-delay':
+        method = 'laguerre'
+        if test == 'bessel':
+            f = lambda n : j0(2*np.sqrt(np.random.gamma(n+1) * (t/2 + 1/2)))
+            s = log(t/2 + 1/2)
+    
     def poisson_x0():
         return np.random.poisson(x0)
-    xt_array = bd_simulator(t, x0=poisson_x0, num_paths=N, method = 'bessel', num_threads=4)
-    return np.mean(np.vectorize(f)(xt_array)).round(num_decimal)
+    xt_array = bd_simulator(s, x0=poisson_x0, num_paths=N, method=method, num_threads=4)
+    return np.mean(f(xt_array)).round(num_decimal)
 
-def MC_BESQviaLaguerre_gateway(N = 10**6, t = 0, x0 = 0, test = 'bessel', args = [], num_decimal = 4):
+def MC_Laguerre_gateway(N = 10**6, t = 0, x0 = 0, test = 'laguerre', method = 'laguerre', args = [], num_decimal = 4):
     """
-    Monte Carlo estimator of expected BESQ using dLaguerre simulation
+    Monte Carlo estimator of expected Laguerre using dLaguerre simulation or dLaguerre simulation
     :param N: int, Number of simulations
     :param T: positive float, Simulation horizon
     :param x0: initial value of X
+    :param method: simulation method, currently support {'laguerre', 'laguerre-delay'}
     :param test: defines test function
     :args: arguments to define test function
     """
-    if test == 'bessel':
-        f = lambda n : laguerre(n)(1 + t)
-    elif test == 'poly':
-        if len(args) < 1:
-            print('No coefficients provided')
-            coef = []
-        else: 
-            coef = [args[0][i]*((1 + t)**i) for i in range(len(args[0]))]
-        f = lambda n : discrete_poly(n, coef)
-    else:
-        f = lambda n : 0
-
+    if method == 'laguerre':
+        if test == 'laguerre':
+            f = lambda m : eval_meixner(args['n'], m)
+            s = t
+    elif method == 'laguerre-delay':
+        if test == 'laguerre':
+            f = lambda m : eval_laguerre(args['n'], np.random.gamma(m+1)/2)
+            s = t - log(2)
+    
     def poisson_x0():
         return np.random.poisson(x0)
-    xt_array = bd_simulator(t = log(t + 1), x0=poisson_x0, num_paths=N, method = 'laguerre', num_threads=4)
-    return np.mean(np.vectorize(f)(xt_array)).round(num_decimal)
+    xt_array = bd_simulator(s, x0=poisson_x0, num_paths=N, method='laguerre', num_threads=4)
+    return np.mean(f(xt_array)).round(num_decimal)
 
 def MC_BESQ_hankel(N = 10**6, t = 0, x0 = 0, test = 'custom', function = lambda x : 0, args = [], num_decimal = 4):
     """
@@ -115,6 +121,9 @@ def discrete_poly(n, coef):
 
 def exact_BESQ(t = 0, x0 = 0, num_decimal = 4):
     return (exp(-t)*jv(0, 2*np.sqrt(x0))).round(num_decimal)
+
+def exact_Laguerre(t = 0, x0 = 0, n = 0, num_decimal = 4):
+    return (exp(-t*n)*eval_laguerre(n, x0)).round(num_decimal)
 
 def hankel_reparam(z, f):
     """
@@ -175,3 +184,23 @@ def hankel_reparam(z, f):
 #
 #     return result
 
+def meixner(n, m):
+    """
+    Mexiner polynomial Mn(m) = \sum_{k=0}^m (-1)^k {m \choose k} {n \choose k}
+    :param n: int
+    :param m: int
+    """
+    summ, summand = 1, 1
+    n1, m1 = n+1, m+1
+    for k in range(1, min(m,n)+1):
+        summand *= - (m1/k - 1) * (n1/k - 1)
+        summ += summand
+    return summ
+
+def eval_meixner(n, m):
+    """
+    Evalutaiton of Mexiner polynomial Mn at ms = (m1, ..., ml)
+    :param n: int
+    :param m: array
+    """
+    return np.asarray([meixner(n, mi) for mi in m])
