@@ -246,11 +246,11 @@
 			\beq \E_x[F(X_t^{B})] = \E[f_t(\bb{X}^{L}_{\log (t + 1)}) \mid \bb{X}^B_0 \sim \pois(x)] . \eeq
 			
 		\item (Interweaving with delay) By duality and self-adjointness, for $t \geq 0$,  $Q_{t + 1} = \Lambda \bb{Q}_t \Lambda^*$. In particular, for $f \in L^2(\R_+$), 
-			\beq \E_x[F(X_{t + 1}^{B})] = \E[F(\Gam(\bb{X}_t^{B})) \mid \bb{X}^B_0 \sim \pois(x)] . \eeq
+			\beq \E_x[F(X_{t + 1}^{B})] = \E[F(\Gam(\bb{X}_t^{B} + 1)) \mid \bb{X}^B_0 \sim \pois(x)] . \eeq
 			Similarly, for $t \geq 0$, $K_{t + \ln 2} = \Lambda \bb{K}_t \widehat{\Lambda}$. Fix $t \geq 0$ and let $s = \ln (\frac{t}{2} + 1)$. We have
 			\begin{align}
 			 \E_x[F(X_{t + 1}^{B})] &= K_{s + \ln 2} d_{t+2} F (x) = \Lambda \bb{K}_s \Lambda^* d_{\frac{t}{2} + 1} F(x) \\
-			 &= \E[d_{\frac{t}{2} + 1} F(\Gam(\bb{X}_s^{L})) \mid \bb{X}^L_0 \sim \pois(x)].
+			 &= \E[d_{\frac{t}{2} + 1} F(\Gam(\bb{X}_s^{L} + 1)) \mid \bb{X}^L_0 \sim \pois(x)].
 			\end{align}
 	
 	\end{enumerate}
@@ -265,7 +265,7 @@
 	\begin{enumerate}
 	\item (Interweaving with delay) For $t \geq 0$, using $K_{t + \ln 2} = \Lambda \bb{K}_t \widehat{\Lambda}$, we have
 			\begin{align}
-			 \E_x[F(X_{t + \ln 2}^{L})] &= \E[d_{\frac{1}{2}} F(\Gam(\bb{X}_t^{L})) \mid \bb{X}^L_0 \sim \pois(x)].
+			 \E_x[F(X_{t + \ln 2}^{L})] &= \E[d_{\frac{1}{2}} F(\Gam(\bb{X}_t^{L} + 1)) \mid \bb{X}^L_0 \sim \pois(x)].
 			\end{align}
 	
 	\end{enumerate}
