@@ -43,6 +43,9 @@ def MC_BESQ_gateway(N = 10**6, t = 0, x0 = 0, test = 'bessel', method = 'bessel'
         if test == 'bessel':
             f = lambda n : eval_laguerre(n, 1)
             s = t
+        elif test == 'custom':
+            f = arg[0]
+            s = t
     elif method == 'laguerre':
         if test == 'bessel':
             f = lambda n : eval_laguerre(n, 1+t)
@@ -51,6 +54,9 @@ def MC_BESQ_gateway(N = 10**6, t = 0, x0 = 0, test = 'bessel', method = 'bessel'
         method = 'bessel'
         if test == 'bessel':
             f = lambda n : j0(2*np.sqrt(np.random.gamma(n+1)))
+            s = t - 1
+        elif test == 'custom':
+            f = lambda n : args[0](np.random.gamma(n + 1))
             s = t - 1
     elif method == 'laguerre-delay':
         method = 'laguerre'
@@ -143,7 +149,7 @@ def MC_BESQ_hankel(N = 10**6, t = 0, x0 = 0, test = 'custom', function = lambda 
 
     estimates = np.zeros(N)
     for n in range(N):
-        Z = np.random.exponential(t)
+        Z = np.random.exponential(1/t)
         estimates[n] = j0(x0*Z)*hankel_reparam(Z, f)/t
     return np.mean(estimates).round(num_decimal)
 
