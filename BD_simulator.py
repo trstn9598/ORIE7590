@@ -87,10 +87,32 @@ def MC_Laguerre_gateway(N = 10**6, t = 0, x0 = 0, test = 'laguerre', method = 'l
         if test == 'laguerre':
             f = lambda m : eval_laguerre(args['n'], np.random.gamma(m+1)/2)
             s = t - log(2)
+        elif test == 'relu':
+            f = lambda m : np.maximum(0, np.random.gamma(m+1)/2)
+            s = t - log(2)
     
     def poisson_x0():
         return np.random.poisson(x0)
     xt_array = bd_simulator(s, x0=poisson_x0, num_paths=N, method='laguerre', num_threads=4)
+    return np.mean(f(xt_array)).round(num_decimal)
+
+def MC_Laguerre(N = 10**6, t = 0, x0 = 0, test = 'laguerre', args = [], num_decimal = 4):
+    """
+    Monte Carlo estimator of expected Laguerre using Brownian motion simulation
+    :param N: int, Number of simulations
+    :param T: positive float, Simulation horizon
+    :param x0: initial value of X
+    :param test: defines test function
+    :args: arguments to define test function
+    """
+    if test == 'laguerre':
+        f = lambda x : eval_laguerre(args['n'], x)
+    elif test == 'relu':
+        f = lambda x : np.maximum(0, x)
+    
+    s = exp(t) - 1
+    xt_array = exp(-t)/2 * np.sum(np.square(np.random.multivariate_normal(np.zeros(2), s*np.eye(2), size=N)
+                                           + np.sqrt(x0)*np.ones((N,2))), axis=1)
     return np.mean(f(xt_array)).round(num_decimal)
 
 def MC_dBESQ_gateway(N = 10**6, t = 0, n0 = 0, test = 'laguerre', method = 'laguerre', args = [], num_decimal = 4):
