@@ -1,5 +1,8 @@
-from BD_simulator import MC_BESQ_gateway, MC_BESQviaLaguerre_gateway, MC_BESQ_hankel, exact_BESQ
+from BD_simulator import MC_BESQ_gateway, MC_BESQviaLaguerre_gateway, MC_BESQ_hankel, exact_BESQ, hankel_reparam
 import numpy as np
+from math import exp
+import hankel
+from scipy.special import  eval_laguerre 
 
 
 testno = 0
@@ -23,7 +26,7 @@ if False:
 	print('Exact BESQ computation:')
 	print(BESQ_values)
 
-if True:
+if False:
 	# TEST: BESQ simulation using (reparametrized) Hankel transform
 	testno += 1
 	num_paths = 10**2
@@ -32,11 +35,26 @@ if True:
 	print('Test ', testno, ': Hankel simulation')
 	print('Initial values: ', x0_array)
 	print('Times: ', times)
-	test_fn1 = lambda x : np.sqrt(x)
-	print('Test function: sqrt(x)')
-	hankel_estimates =  np.array([[MC_BESQ_hankel(N = num_paths, t = t, x0 = x0, test = 'custom', function = test_fn1) for x0 in x0_array] for t in times])
-	print('Estimates from Hankel simulation')
-	print(hankel_estimates)
+	if True:
+		test_fn1 = lambda x : 1/np.sqrt(x)
+		print('Test function: sqrt(x)')
+		hankel_estimates =  np.array([[MC_BESQ_hankel(N = num_paths, t = t, x0 = x0, test = 'custom', function = test_fn1) for x0 in x0_array] for t in times])
+		print('Estimates from Hankel simulation')
+		print(hankel_estimates)
+	if False:
+		test_fn2 = lambda x : np.exp(-x)
+		print('Test function: exp(-x)')
+		hankel_estimates =  np.array([[MC_BESQ_hankel(N = num_paths, t = t, x0 = x0, test = 'custom', function = test_fn2) for x0 in x0_array] for t in times])
+		print('Estimates from Hankel simulation')
+		print(hankel_estimates)
+
+
+for x in range(10):
+	f = lambda x : eval_laguerre(2, 2*x)*np.exp(-x)
+	print('x = ', x)
+	print(f(x + 1))
+	print(hankel_reparam(x + 1, f))
+
 
 
 
